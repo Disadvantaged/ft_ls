@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 16:02:48 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 13:32:19 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/18 14:51:28 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,17 @@
 # include "libft.h"
 # include <stdarg.h>
 
-# define TRUE 1
-# define FALSE 0
+# define BLACK "\x1b[30m"
+# define RED "\x1b[31m"
+# define GREEN "\x1b[32m"
+# define YELLOW "\x1b[33m"
+# define BLUE "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define CYAN "\x1b[36m"
+# define WHITE "\x1b[37m"
+# define RESET "\x1b[0m"
 # define NO_PRECISION -1
+# define NO_COLOR -1
 
 typedef struct	s_flag
 {
@@ -71,5 +79,6 @@ int				print_len(t_param *params, va_list ap, char letter);
 int				print_char(t_param *params, va_list ap, char letter);
 int				print_adress(t_param *params, va_list ap, char letter);
 int				print_unsigned(t_param *params, va_list ap, char letter);
-
+void			find_color(const char *format, int *i);
+int				enable_color(char *str);
 #endif

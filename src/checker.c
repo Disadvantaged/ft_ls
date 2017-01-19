@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/18 13:28:49 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 13:29:22 by dgolear          ###   ########.fr       */
+/*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
+/*   Updated: 2017/01/19 15:13:01 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		main(void)
+t_option	*check_options(int ac, char **av)
 {
-	ft_printf("Hello World!\n");
+	int		i;
+	t_option	*options;
+
+	i = 1;
+	if (ac == 1)
+		return (set_default());
+
 }

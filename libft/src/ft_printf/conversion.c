@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 15:17:53 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 11:55:44 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/18 14:57:07 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,7 @@ int	conversion(const char *format, int *pos, t_param *params, va_list ap)
 		if (format[*pos] == g_conv[i].spec)
 		{
 			(*pos)++;
-			printed = g_conv[i].fun(params, ap, g_conv[i].spec);
-			return (printed);
+			return (g_conv[i].fun(params, ap, g_conv[i].spec));
 		}
 		i++;
 	}
