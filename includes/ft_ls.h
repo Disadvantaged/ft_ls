@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 15:54:12 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/21 12:33:19 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@
 
 typedef struct	s_color
 {
-	int		R;
+	int		up_r;
 	int		r;
-	int		G;
+	int		up_g;
 	int		l;
 	int		t;
 	int		a;

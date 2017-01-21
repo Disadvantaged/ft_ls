@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 16:00:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/19 17:58:39 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/21 12:27:59 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,17 +79,13 @@ int		ft_printf(const char *format, ...)
 			find_color(format, &i);
 			continue;
 		}
-		if (format[i] != '%')
+		if (format[i++] != '%')
 		{
-			ft_putchar(format[i]);
+			ft_putchar(format[i - 1]);
 			g_len++;
-			i++;
 		}
 		else
-		{
-			i++;
 			check(format, &i, ap);
-		}
 	}
 	va_end(ap);
 	return (g_len);

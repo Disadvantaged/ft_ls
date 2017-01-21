@@ -6,11 +6,10 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:13:07 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/19 17:50:09 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/21 12:32:32 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "libft/includes/libft.h"
 #include <dirent.h>
 #include <sys/stat.h>
@@ -18,43 +17,49 @@
 #include <pwd.h>
 #include <uuid/uuid.h>
 #include <errno.h>
+#include <time.h>
+#include <grp.h>
 
-int		main(int ac, char **av)
+void	ft_ls	(char *av)
 {
-/*	struct dirent	*dir;
+	struct dirent	*dir;
 	DIR				*directory;
-	char			*path;
 	char			*s;
+	char			**time;
+	char			*path;
 	struct stat		buf;
 	struct passwd	*pass;
+	struct group	*grp;
 
-	if ((directory = opendir(av[1])) == NULL && errno != ENOTDIR)
+	if ((directory = opendir(av)) == NULL && errno != ENOTDIR)
 	{
-		ft_printf("ls: %s: %s\n", av[1], strerror(errno));
-		return (-1);
+		ft_printf("ls: %s: %s\n", av, strerror(errno));
+		return ;
 	}
 	else if (errno == ENOTDIR)
 	{
-		ft_printf("%s\n", av[1]);
-		return (0);
+		ft_printf("%s\n", av);
+		return ;
 	}
 	path = ft_strnew(20);
-	path = ft_strcat(av[1], "/");
+	path = ft_strcat(av, "/");
 	while ((dir = readdir(directory)) != NULL)
 	{
-		if (ft_strcmp(dir->d_name, ".") == 0 || ft_strcmp(dir->d_name, "..") == 0)
+		if (dir->d_name[0] == '.')
 			continue;
 		s = ft_strjoin(path, dir->d_name);
 		stat(s, &buf);
 		pass = getpwuid(buf.st_uid);
-		printf("%4lld %2u %7s ", buf.st_size,
-			buf.st_nlink, pass->pw_name);
-		if (S_ISDIR(buf.st_mode))
-			ft_printf("{red}%s{eoc}\n", dir->d_name);
-		else
-			ft_printf("{blue}%s{eoc}\n", dir->d_name);
+		grp = getgrgid(buf.st_gid);
+		time = ft_strsplit(ctime(&buf.st_mtime), ' ');
+		ft_printf("%3u %7s  %s %5lld %s %2s %.5s %s\n", buf.st_nlink,
+			pass->pw_name, grp->gr_name, buf.st_size, time[1], time[2], time[3], dir->d_name);
 		ft_strdel(&s);
 	}
-*/
-ft_printf("{blue} {eoc}%s");
+	closedir(directory);
+}
+
+int		main(int ac, char **av)
+{
+	ft_ls(av[ac - 1]);
 }
