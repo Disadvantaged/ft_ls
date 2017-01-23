@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 16:30:18 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/17 17:28:40 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/23 17:35:59 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	print_width(char *s, wchar_t *s1, char letter, t_param *params)
 	return (printed);
 }
 
-int			print_s(t_param *params, char *s, wchar_t *s1, char letter)
+static int	print_s(t_param *params, char *s, wchar_t *s1, char letter)
 {
 	int		printed;
 
@@ -74,24 +74,25 @@ int			print_string(t_param *params, va_list ap, char letter)
 	char	*s;
 	wchar_t	*s1;
 	int		printed;
+	int		flag;
 
+	s1 = NULL;
+	s = NULL;
+	flag = 0;
 	printed = 0;
-	if (letter == 'S')
-		s1 = va_arg(ap, wchar_t *);
-	else
+	if (letter == 'S' && (s1 = va_arg(ap, wchar_t *)) == NULL)
+		flag = 1;
+	if (letter == 's' && (s = va_arg(ap, char *)) == NULL)
 	{
-		if ((s = va_arg(ap, char *)) == NULL)
-			s = ft_strdup("(null)");
+		flag = 1;
+		s = ft_strdup("(null)");
 	}
 	if (params->flags[1].sign == 0)
-	{
 		printed += print_width(s, s1, letter, params);
-		printed += print_s(params, s, s1, letter);
-	}
-	else
-	{
-		printed += print_s(params, s, s1, letter);
+	printed += print_s(params, s, s1, letter);
+	if (params->flags[1].sign != 0)
 		printed += print_width(s, s1, letter, params);
-	}
+	if (flag && letter == 's')
+		ft_strdel(&s);
 	return (printed);
 }

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 12:48:32 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/15 17:58:33 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/23 17:02:27 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ static int			print_precision(t_param *params, char *value, char letter)
 	printed = 0;
 	if (params->flags[1].sign)
 		printed += print_appendix(params, letter, value, &params->width);
-	if (value[0] == '0')
-		precision++;
 	if (precision > (int)ft_strlen(value))
 		printed += precision - (int)ft_strlen(value);
 	while (precision > (int)ft_strlen(value))

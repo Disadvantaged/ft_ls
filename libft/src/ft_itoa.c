@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/09 10:28:32 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/03 14:45:23 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/23 16:46:25 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char			*ft_itoa(intmax_t n)
 	int		i;
 
 	i = ft_nbrlen(n);
+	if (n < 0)
+		i++;
 	if ((s = ft_strnew(i + 1)) == NULL)
 		return (NULL);
 	if (n == (intmax_t)-9223372036854775808U)
