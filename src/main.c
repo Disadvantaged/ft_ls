@@ -6,19 +6,20 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 15:25:36 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/23 18:44:05 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/25 16:42:54 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-int		main(int ac , char **av)
+int		main(int ac, char **av)
 {
+	int			i;
 	t_option	*options;
 
+	i = 0;
 	options = check_options(ac, av);
-	path_to_dir(options);
-	ft_ls(options);
-	free_options(options);
+	while (i < options->cursize)
+		ft_printf("%s\n", options->paths[i++]);
 	return (0);
 }
