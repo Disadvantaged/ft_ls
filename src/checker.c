@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/25 16:42:29 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/25 17:32:58 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ static void	check_flags(t_option *options, char *str)
 		while (j < 10)
 			if (options->flags[j].letter == str[i])
 			{
-				options->flags[j - 1].sign = 1;
+				options->flags[j].sign = 1;
 				break ;
 			}
 			else
 				j++;
 		if (j == 10)
-			exit(ft_printf("ls: illegal option -- %c\nusage: \
-					ls [-RrGltafugd] [file ...]", str[i]));
+			exit(ft_printf("ft_ls: illegal option -- %c\nusage: \
+ls [-RGadfglrtu] [file ...]\n", str[i]));
 		i++;
 	}
 }
@@ -96,16 +96,21 @@ void		add_dir(t_option *options, char *str)
 t_option	*check_options(int ac, char **av)
 {
 	int			i;
+	int			flag;
 	t_option	*options;
 
+	flag = 0;
 	i = 1;
 	options = set_default();
 	while (i < ac)
 	{
-		if (av[i][0] == '-')
+		if (!flag && av[i][0] == '-')
 			check_flags(options, av[i]);
 		else
+		{
 			add_dir(options, av[i]);
+			flag = 1;
+		}
 		i++;
 	}
 	if (options->cursize == 0)
