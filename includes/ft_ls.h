@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/25 16:59:57 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/27 13:24:35 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,20 @@ typedef struct	s_option
 
 }				t_option;
 
+typedef struct	s_directory
+{
+	char	*path;
+	DIR		*dir;
+}				t_directory;
+
+typedef struct	s_file
+{
+	char		*path;
+	struct stat file;
+}				t_file;
+
 t_option		*check_options(int ac, char **av);
-void			path_to_dir(t_option *options);
+void			path_to_dir(t_option *options, t_list **dir, t_list **file);
 void			ft_ls(t_option *options);
 void			free_options(t_option *options);
 

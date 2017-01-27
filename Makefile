@@ -3,7 +3,8 @@ NAME = ft_ls
 FLAGS = -Wall -Werror -Wextra -Ilibft/includes -Iincludes/
 
 SRCS = src/main.c \
-	   src/checker.c
+	   src/checker.c \
+	   src/path_to_dir.c
 
 LIBFT_PATH = libft/
 
