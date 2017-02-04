@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 15:09:49 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/04 16:03:07 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ typedef struct	s_option
 
 typedef struct	s_directory
 {
-	char	*path;
-	DIR		*dir;
+	char		*path;
+	DIR			*dir;
+	struct stat	statbuf;
 }				t_directory;
 
 typedef struct	s_file

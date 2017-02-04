@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 12:05:26 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 15:09:57 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/04 15:45:49 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,27 +90,28 @@ static char	*mode(char *path, struct stat statbuf)
 		exit(ft_printf("ft_ls: %s: %s\n", path, strerror(errno)) * 0 - 1);
 	mod[0] = check_types(statbuf);
 	mod[1] = statbuf.st_mode & S_IRUSR ? 'r' : '-';
-	mod[2] = statbuf.st_mode & S_IWUSR ? 'r' : '-';
+	mod[2] = statbuf.st_mode & S_IWUSR ? 'w' : '-';
 	mod[4] = statbuf.st_mode & S_IRGRP ? 'r' : '-';
-	mod[5] = statbuf.st_mode & S_IWGRP ? 'r' : '-';
+	mod[5] = statbuf.st_mode & S_IWGRP ? 'w' : '-';
 	mod[7] = statbuf.st_mode & S_IROTH ? 'r' : '-';
-	mod[8] = statbuf.st_mode & S_IWOTH ? 'r' : '-';
+	mod[8] = statbuf.st_mode & S_IWOTH ? 'w' : '-';
 	check_executable_permissions(statbuf, mod);
 	mod[10] = xattr_or_acl(path);
 	return (mod);
 }
 
-t_file		*get_file_data(char *name, char *path)
+t_file		*get_file_data(char *path, char *name)
 {
 	struct stat		statbuf;
 	t_file			*filet;
 
-	if ((filet = (t_file *)malloc(sizeof(t_file))) == NULL
-		|| lstat(path, &statbuf) == -1)
-		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 - 1);
-	filet->statbuf = statbuf;
-	filet->name = ft_strdup(name);
+	if ((filet = (t_file *)malloc(sizeof(t_file))) == NULL)
+		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + errno);
 	filet->path = ft_strjoin(path, name);
+	filet->name = ft_strrchr(filet->path, '/') + 1;
+	if (lstat(filet->path, &statbuf) < 0)
+		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + errno);
+	filet->statbuf = statbuf;
 	filet->mode = mode(path, statbuf);
 	filet->mtime = statbuf.st_mtime;
 	filet->atime = statbuf.st_atime;
