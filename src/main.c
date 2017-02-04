@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 15:25:36 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/27 14:35:37 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/01/27 16:10:55 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ int		main(int ac, char **av)
 			ft_printf("\n%s:\n", ((t_directory *)node->content)->path);
 		while ((directory = readdir(((t_directory *)node->content)->dir)) != NULL)
 		{
-			if (directory->d_name[0] != '.')
+			if (directory->d_name[0] == '.' && !options->flags[5].sign)
+				continue ;
 				ft_printf("%s\t", directory->d_name);
 		}
 		node = node->next;

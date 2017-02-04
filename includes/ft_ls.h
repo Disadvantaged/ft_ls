@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/27 13:24:35 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/04 15:09:49 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/xattr.h>
 # include <time.h>
 # include <errno.h>
+# include <sys/acl.h>
 
 typedef struct	s_flag
 {
@@ -49,7 +50,6 @@ typedef struct	s_option
 	int		cursize;
 	int		maxsize;
 	char	**paths;
-
 }				t_option;
 
 typedef struct	s_directory
@@ -60,12 +60,22 @@ typedef struct	s_directory
 
 typedef struct	s_file
 {
-	char		*path;
-	struct stat file;
+	char			*path;
+	char			*name;
+	struct stat		statbuf;
+	char			*mode;
+	time_t			mtime;
+	time_t			atime;
+	struct passwd	*pass;
+	struct group	*group;
+	nlink_t			nlink;
+	off_t			size;
+	blkcnt_t		blocks;
 }				t_file;
 
 t_option		*check_options(int ac, char **av);
 void			path_to_dir(t_option *options, t_list **dir, t_list **file);
+t_file			*get_file_data(char *name, char *path);
 void			ft_ls(t_option *options);
 void			free_options(t_option *options);
 
