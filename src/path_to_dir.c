@@ -6,13 +6,13 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 16:06:01 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 15:45:14 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static t_list	*create_dir(char *path)
+static t_list	*create_dir(char *path, t_option *options)
 {
 	DIR			*directory;
 	t_directory	*dirt;
@@ -32,6 +32,10 @@ static t_list	*create_dir(char *path)
 		dirt->path = ft_strjoin(path, "/");
 	dirt->dir = directory;
 	dirt->statbuf = statbuf;
+	if (options->flags[7].sign)
+		dirt->time = statbuf.st_atime;
+	else
+		dirt->time = statbuf.st_mtime;
 	node->content = dirt;
 	node->next = NULL;
 	node->content_size = sizeof(dirt);
@@ -48,7 +52,7 @@ static	t_list	*create_file(t_option *options, int pos)
 		ft_printf("ft_ls: %s: %s\n", options->paths[pos], strerror(errno));
 		exit(errno);
 	}
-	filet = get_file_data(options->paths[pos], "");
+	filet = get_file_data(options->paths[pos], "", options);
 	node->content = filet;
 	node->next = NULL;
 	node->content_size = sizeof(filet);
@@ -69,9 +73,9 @@ void			path_to_dir(t_option *options, t_list **dir, t_list **file)
 			exit(errno);
 		}
 		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
-			ft_lstadd(dir, create_dir(options, i));
+			ft_lstaddlast(dir, create_dir(options->paths[i], options));
 		else
-			ft_lstadd(file, create_file(options, i));
+			ft_lstaddlast(file, create_file(options, i));
 		i++;
 	}
 }

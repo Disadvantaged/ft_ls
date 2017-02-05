@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 16:03:07 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 15:19:27 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ typedef struct	s_directory
 	char		*path;
 	DIR			*dir;
 	struct stat	statbuf;
+	time_t		time;
 }				t_directory;
 
 typedef struct	s_file
@@ -65,8 +66,7 @@ typedef struct	s_file
 	char			*name;
 	struct stat		statbuf;
 	char			*mode;
-	time_t			mtime;
-	time_t			atime;
+	time_t			time;
 	struct passwd	*pass;
 	struct group	*group;
 	nlink_t			nlink;
@@ -76,7 +76,7 @@ typedef struct	s_file
 
 t_option		*check_options(int ac, char **av);
 void			path_to_dir(t_option *options, t_list **dir, t_list **file);
-t_file			*get_file_data(char *name, char *path);
+t_file			*get_file_data(char *path, char *name, t_option *options);
 void			ft_ls(t_option *options);
 void			free_options(t_option *options);
 

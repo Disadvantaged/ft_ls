@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 12:05:26 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 15:45:49 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 15:18:58 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ static char	*mode(char *path, struct stat statbuf)
 	return (mod);
 }
 
-t_file		*get_file_data(char *path, char *name)
+t_file		*get_file_data(char *path, char *name, t_option *options)
 {
 	struct stat		statbuf;
 	t_file			*filet;
@@ -108,13 +108,18 @@ t_file		*get_file_data(char *path, char *name)
 	if ((filet = (t_file *)malloc(sizeof(t_file))) == NULL)
 		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + errno);
 	filet->path = ft_strjoin(path, name);
-	filet->name = ft_strrchr(filet->path, '/') + 1;
+	if (ft_strrchr(filet->path, '/') == NULL)
+		filet->name = ft_strdup(filet->path);
+	else
+		filet->name = ft_strdup(ft_strrchr(filet->path, '/') + 1);
 	if (lstat(filet->path, &statbuf) < 0)
 		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + errno);
 	filet->statbuf = statbuf;
 	filet->mode = mode(path, statbuf);
-	filet->mtime = statbuf.st_mtime;
-	filet->atime = statbuf.st_atime;
+	if (options->flags[7].sign)
+		filet->time = statbuf.st_atime;
+	else
+		filet->time = statbuf.st_mtime;
 	filet->group = getgrgid(statbuf.st_gid);
 	filet->pass = getpwuid(statbuf.st_uid);
 	filet->nlink = statbuf.st_nlink;

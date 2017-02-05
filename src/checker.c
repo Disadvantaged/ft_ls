@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/04 16:16:43 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 13:43:03 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,10 @@ t_option	*check_options(int ac, char **av)
 		}
 		i++;
 	}
-	if (options->flags[8])
-		options->flags[3] = 1;
-	if (options->flags[6])
-		options->flags[5] = 1;
+	if (options->flags[8].sign)
+		options->flags[3].sign = 1;
+	if (options->flags[6].sign)
+		options->flags[5].sign = 1;
 	if (options->cursize == 0)
 		options->paths[options->cursize++] = ft_strdup(".");
 	return (options);
