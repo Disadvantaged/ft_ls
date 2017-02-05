@@ -6,16 +6,20 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 08:27:36 by dgolear           #+#    #+#             */
-/*   Updated: 2016/10/23 12:34:47 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 12:49:50 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strcmp(const char *s1, const char *s2)
+int		ft_strcmp(const void *a, const void *b)
 {
 	size_t		i;
+	char		*s1;
+	char		*s2;
 
+	s1 = (char *)a;
+	s2 = (char *)b;
 	i = 0;
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;

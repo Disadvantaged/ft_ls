@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/09 09:44:19 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/27 14:40:03 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 12:48:36 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ char			*ft_strchr(const char *str, int c);
 char			*ft_strrchr(const char *str, int c);
 char			*ft_strstr(const char *haystack, const char *needle);
 char			*ft_strnstr(const char *s2, const char *s1, size_t len);
-int				ft_strcmp(const char *s1, const char *s2);
-int				ft_strncmp(const char *s1, const char *s2, size_t n);
+int				ft_strcmp(const void *s1, const void *s2);
+int				ft_intcmp(const void *s1, const void *s2);
+int				ft_strncmp(const void *s1, const void *s2, size_t n);
 int				ft_atoi(const char *s);
 char			*ft_unsigned_itoa_base(uintmax_t val, char *base);
 int				ft_atoi_base(const char *s, int str_base);
@@ -96,6 +97,8 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
+int				ft_lstsort(t_list **head,
+				int (*compare)(const void *, const void *));
 t_list			*ft_lstnew(void const *content, size_t content_size);
 void			ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
 void			ft_lstdel(t_list **alst, void (*del)(void *, size_t));
