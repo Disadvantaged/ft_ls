@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/18 15:25:36 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/08 18:24:13 by dgolear          ###   ########.fr       */
+/*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
+/*   Updated: 2017/02/08 18:23:29 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-
-
-int			main(int ac, char **av)
+void	ft_ls(t_option *options, t_list *files, t_list *dirs)
 {
-	t_option		*options;
-	t_list			*dir;
-	t_list			*file;
+	t_list	*node;
 
-	options = check_options(ac, av);
-	dir = NULL;
-	file = NULL;
-	path_to_dir(options, &dir, &file);
-	sort_list(options, &file);
-	sort_list(options, &dir);
-	ft_ls(options, file, dir);
-//	free_options(options);
-//	free_dirs(dir);
-	return (0);
+	if (files != NULL)
+		print_files(&files);
+//	free_files(&files);
+	if (dirs != NULL)
+		ft_printf("\n");
+	node = dirs;
+	while (node != NULL)
+	{
+		inner_ls(options, node);
+		if (node->next != NULL)
+			ft_printf("\n");
+	}
 }

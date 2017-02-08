@@ -5,7 +5,8 @@ FLAGS = -Wall -Werror -Wextra -Ilibft/includes -Iincludes/
 SRCS = src/main.c \
 	   src/checker.c \
 	   src/path_to_dir.c \
-	   src/file_data.c
+	   src/file_data.c \
+	   src/sort.c
 
 LIBFT_PATH = libft/
 
