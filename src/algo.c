@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/10 18:26:48 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/10 18:33:59 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ void			print_files(t_option *options, t_list **files)
 int				get_total(t_list *files, t_list *dirs)
 {
 	t_list		*node;
-	t_file		*file;
-	t_directory	*dr;
 	int			total;
 
 	total = 0;
