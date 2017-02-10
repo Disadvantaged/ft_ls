@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/08 18:24:02 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/10 17:02:52 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,21 @@ typedef struct	s_file
 	blkcnt_t		blocks;
 }				t_file;
 
+struct			s_max
+{
+	int					size;
+	unsigned long		namelen;
+	unsigned long		grouplen;
+	int					link;
+};
+
 t_option		*check_options(int ac, char **av);
 void			path_to_dir(t_option *options, t_list **dir, t_list **file);
 t_file			*get_file_data(char *path, char *name, t_option *options);
 void			ft_ls(t_option *options, t_list *files, t_list *dirs);
 void			free_options(t_option *options);
 void			sort_list(t_option *options, t_list **head);
+void			print_files(t_option *options, t_list **files);
+void			inner_ls(t_option *options, t_list *node);
 
 #endif

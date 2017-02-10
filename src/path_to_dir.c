@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/05 15:45:14 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/10 16:56:18 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ static t_list	*create_dir(char *path, t_option *options)
 	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL
 		|| (node = (t_list *)malloc(sizeof(t_list))) == NULL
 		|| (directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
-	{
-		ft_printf("ft_ls: %s: %s\n", path, strerror(errno));
-		exit(errno);
-	}
+		exit(ft_printf("ft_ls: %s: %s\n", path, strerror(errno)) * 0 + errno);
 	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
 	else
