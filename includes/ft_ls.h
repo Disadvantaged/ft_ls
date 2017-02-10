@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/10 17:02:52 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/10 18:20:16 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,13 @@ struct			s_max
 
 t_option		*check_options(int ac, char **av);
 void			path_to_dir(t_option *options, t_list **dir, t_list **file);
-t_file			*get_file_data(char *path, char *name, t_option *options);
+t_file			*get_file_data(char *path, t_option *options);
 void			ft_ls(t_option *options, t_list *files, t_list *dirs);
 void			free_options(t_option *options);
 void			sort_list(t_option *options, t_list **head);
 void			print_files(t_option *options, t_list **files);
-void			inner_ls(t_option *options, t_list *node);
+void			inner_ls(t_option *options, t_directory *data);
+t_list			*create_file(char *path, t_option *options);
+t_list			*create_dir(char *path, t_option *options);
 
 #endif
