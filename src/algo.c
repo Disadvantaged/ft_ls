@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/10 18:33:59 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/11 16:28:36 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 			buffer[size] = '\0';
 		else
 			exit(ft_printf("ft_ls: %s", strerror(errno)) * 0 + errno);
-		ft_printf("%s -> %s\n", data->path, buffer);
+		ft_printf("%s -> %s\n", data->name, buffer);
 	}
 	else
-		ft_printf("%s\n", data->path);
+		ft_printf("%s\n", data->name);
 }
 
 void			print_files(t_option *options, t_list **files)
@@ -82,7 +82,7 @@ void			print_files(t_option *options, t_list **files)
 		if (options->flags[3].sign)
 			print_long(data, max, options);
 		else
-			ft_printf("%s\n", data->path);
+			ft_printf("%s\n", data->name);
 		node = node->next;
 	}
 }
@@ -112,7 +112,9 @@ void			inner_ls(t_option *options, t_directory *data)
 {
 	t_list			*files;
 	t_list			*dirs;
-	struct dirent 	*dr;
+	t_list			*node;
+	struct stat		stat;
+	struct dirent	*dr;
 	char			*path;
 
 	dirs = NULL;
@@ -120,20 +122,34 @@ void			inner_ls(t_option *options, t_directory *data)
 	errno = 0;
 	while ((dr = readdir(data->dir)) != NULL)
 	{
+		if (dr->d_name[0] == '.' && options->flags[5].sign == 0)
+			continue ;
 		path = ft_strjoin(data->path, dr->d_name);
-		if (dr->d_type == 4 && options->flags[0].sign)
+		lstat(path, &stat);
+		if (S_ISDIR(stat.st_mode) && options->flags[0].sign
+&& !(ft_strcmp("..", dr->d_name) == 0) && !(ft_strcmp(".", dr->d_name) == 0))
 			ft_lstaddlast(&dirs, create_dir(path, options));
-		else
-			ft_lstaddlast(&files, create_file(path, options));
+		ft_lstaddlast(&files, create_file(path, options));
 		ft_strdel(&path);
 	}
-	if (errno)
-		exit(errno + 0 * ft_printf("ft_ls: %s\n", strerror(errno)));
 	sort_list(options, &files);
 	sort_list(options, &dirs);
-	ft_printf("total %d\n", get_total(files, dirs));
+	if (options->flags[3].sign)
+		ft_printf("total %d\n", get_total(files, dirs));
 	print_files(options, &files);
-//	free_files(&files);
+	free_files(files);
+	if (dirs != NULL)
+		ft_printf("\n");
+	node = dirs;
+	while (node != NULL)
+	{
+		printf("%s:\n", ((t_directory *)node->content)->path);
+		inner_ls(options, node->content);
+		if (node->next != NULL)
+			ft_printf("\n");
+		node = node->next;
+	}
+	free_dirs(dirs);
 }
 
 void			ft_ls(t_option *options, t_list *files, t_list *dirs)
@@ -141,18 +157,24 @@ void			ft_ls(t_option *options, t_list *files, t_list *dirs)
 	t_list	*node;
 
 	if (files != NULL)
-		print_files(options, &files);
-//	free_files(&files);
-	if (dirs != NULL)
-		ft_printf("\n");
-	node = dirs;
-	while (node != NULL)
 	{
-		if (ft_lstlen(dirs) > 1)
-			ft_printf("%s:\n", ((t_directory *)node->content)->path);
-		inner_ls(options, (t_directory *)node->content);
-		if (node->next != NULL)
+		print_files(options, &files);
+		if (dirs != NULL)
 			ft_printf("\n");
-		node = node->next;
+		free_files(files);
+	}
+	if (dirs != NULL)
+	{
+		node = dirs;
+		while (node != NULL)
+		{
+			if (ft_lstlen(dirs) > 1)
+				ft_printf("%s:\n", ((t_directory *)node->content)->path);
+			inner_ls(options, (t_directory *)node->content);
+			if (node->next != NULL)
+				ft_printf("\n");
+			node = node->next;
+		}
+		free_dirs(dirs);
 	}
 }

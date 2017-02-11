@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 15:25:36 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/10 16:59:14 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/11 16:07:11 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int			main(int ac, char **av)
 	sort_list(options, &file);
 	sort_list(options, &dir);
 	ft_ls(options, file, dir);
-//	free_options(options);
-//	free_dirs(dir);
+	free_options(options);
 	return (0);
 }
