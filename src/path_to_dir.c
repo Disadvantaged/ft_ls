@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 12:07:28 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 16:31:18 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_list	*create_dir(char *path, t_option *options)
 	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL
 		|| (node = (t_list *)malloc(sizeof(t_list))) == NULL
 		|| (directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
-		exit(ft_printf("ft_ls: %s: %s\n", path, strerror(errno)) * 0 + errno);
+		return (NULL);
 	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
 	else
@@ -59,6 +59,7 @@ t_list	*create_file(char *path, t_option *options)
 void	path_to_dir(t_option *options, t_list **dir, t_list **file)
 {
 	struct stat	statbuf;
+	t_list		*node;
 	int			i;
 
 	i = 0;
@@ -70,7 +71,11 @@ void	path_to_dir(t_option *options, t_list **dir, t_list **file)
 			exit(errno);
 		}
 		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
-			ft_lstaddlast(dir, create_dir(options->paths[i], options));
+		{
+			if ((node = create_dir(options->paths[i], options)) == NULL)
+				exit(ft_printf("ft_ls: %s\n", strerror(errno)));
+			ft_lstaddlast(dir, node);
+		}
 		else
 			ft_lstaddlast(file, create_file(options->paths[i], options));
 		i++;

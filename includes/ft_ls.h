@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 13:20:35 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 16:40:12 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include <errno.h>
 # include <sys/acl.h>
 # include <sys/ioctl.h>
+# define MAJOR(x)		((int32_t)(((u_int32_t)(x) >> 24) & 0xff))
+# define MINOR(x)		((int32_t)((x) & 0xffffff))
 
 typedef struct	s_flag
 {
@@ -83,6 +85,8 @@ struct			s_max
 	unsigned long		name;
 	unsigned long		grouplen;
 	int					link;
+	int					maj;
+	int					min;
 };
 
 t_option		*check_options(int ac, char **av);
@@ -97,6 +101,5 @@ void			print_files(t_option *options, t_list **files);
 void			inner_ls(t_option *options, t_directory *data);
 t_list			*create_file(char *path, t_option *options);
 t_list			*create_dir(char *path, t_option *options);
-void			print_columns(t_file *d, struct s_max m, t_option *op, int len);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 12:12:12 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 16:47:53 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,51 @@ int				get_total(t_list *files, t_list *dirs)
 	return (total);
 }
 
-void			get_files_and_dirs(t_option *options,
-		t_directory *data, t_list **d, t_list **f)
+void			add_dirs(t_option *options, t_list *files, t_list **dirs)
+{
+	t_list		*node;
+	t_list		*n;
+	t_file		*data;
+
+	node = files;
+	while (node != NULL)
+	{
+		data = node->content;
+		if (S_ISDIR(data->statbuf.st_mode) && !(ft_strcmp("..", data->name) ==
+					0) && !(ft_strcmp(".", data->name) == 0))
+		{
+			if ((n = create_dir(data->path, options)) == NULL)
+			{
+				ft_printf("\n%s:\nft_ls: %s: %s\n", data->path, data->name,
+						strerror(errno));
+				node = node->next;
+				continue ;
+			}
+			ft_lstaddlast(dirs, n);
+		}
+		node = node->next;
+	}
+	sort_list(options, dirs);
+}
+
+void			get_files(t_option *options, t_directory *data, t_list **f)
 {
 	t_list			*files;
-	t_list			*dirs;
 	struct dirent	*dr;
 	struct stat		stat;
 	char			*path;
 
 	files = NULL;
-	dirs = NULL;
 	while ((dr = readdir(data->dir)) != NULL)
 	{
 		if (dr->d_name[0] == '.' && options->flags[5].sign == 0)
 			continue ;
 		path = ft_strjoin(data->path, dr->d_name);
 		lstat(path, &stat);
-		if (S_ISDIR(stat.st_mode) && options->flags[0].sign &&
-!(ft_strcmp("..", dr->d_name) == 0) && !(ft_strcmp(".", dr->d_name) == 0))
-			ft_lstaddlast(&dirs, create_dir(path, options));
 		ft_lstaddlast(&files, create_file(path, options));
 		ft_strdel(&path);
 	}
 	sort_list(options, &files);
-	sort_list(options, &dirs);
-	*d = dirs;
 	*f = files;
 }
 
@@ -86,10 +105,12 @@ void			inner_ls(t_option *options, t_directory *data)
 
 	dirs = NULL;
 	files = NULL;
-	get_files_and_dirs(options, data, &dirs, &files);
+	get_files(options, data, &files);
 	if (options->flags[3].sign)
 		ft_printf("total %d\n", get_total(files, dirs));
 	print_files(options, &files);
+	if (options->flags[0].sign)
+		add_dirs(options, files, &dirs);
 	free_files(files);
 	if (dirs != NULL)
 	{

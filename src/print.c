@@ -6,36 +6,47 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 13:21:45 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 16:40:56 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
+void			init_max(struct s_max max)
+{
+	max.passlen = 0;
+	max.grouplen = 0;
+	max.link = 0;
+	max.name = 0;
+	max.maj = 0;
+	max.maj = 0;
+}
+
 struct s_max	get_max(t_list **files)
 {
-	t_list			*node;
+	t_list			*n;
 	struct s_max	max;
 
-	node = *files;
-	max.size = ft_nbrlen(((t_file *)node->content)->size);
-	max.passlen = ft_strlen(((t_file *)node->content)->pass->pw_name);
-	max.grouplen = ft_strlen(((t_file *)node->content)->group->gr_name);
-	max.link = ft_nbrlen(((t_file *)node->content)->nlink);
-	max.name = ft_strlen(((t_file *)node->content)->name);
-	while (node != NULL)
+	n = *files;
+	max.size = 0;
+	init_max(max);
+	while (n != NULL)
 	{
-		if (ft_nbrlen(((t_file *)node->content)->size) > max.size)
-			max.size = ft_nbrlen(((t_file *)node->content)->size);
-		if (ft_strlen(((t_file *)node->content)->pass->pw_name) > max.passlen)
-			max.passlen = ft_strlen(((t_file *)node->content)->pass->pw_name);
-		if (ft_strlen(((t_file *)node->content)->group->gr_name) > max.grouplen)
-			max.grouplen = ft_strlen(((t_file *)node->content)->group->gr_name);
-		if (ft_nbrlen(((t_file *)node->content)->nlink) > max.size)
-			max.link = ft_nbrlen(((t_file *)node->content)->nlink);
-		if (ft_strlen(((t_file *)node->content)->name) > max.name)
-			max.name = ft_strlen(((t_file *)node->content)->name);
-		node = node->next;
+		if (ft_nbrlen(((t_file *)n->content)->size) > max.size)
+			max.size = ft_nbrlen(((t_file *)n->content)->size);
+		if (ft_strlen(((t_file *)n->content)->pass->pw_name) > max.passlen)
+			max.passlen = ft_strlen(((t_file *)n->content)->pass->pw_name);
+		if (ft_strlen(((t_file *)n->content)->group->gr_name) > max.grouplen)
+			max.grouplen = ft_strlen(((t_file *)n->content)->group->gr_name);
+		if (ft_nbrlen(((t_file *)n->content)->nlink) > max.link)
+			max.link = ft_nbrlen(((t_file *)n->content)->nlink);
+		if (ft_strlen(((t_file *)n->content)->name) > max.name)
+			max.name = ft_strlen(((t_file *)n->content)->name);
+		if (ft_nbrlen(MAJOR(((t_file *)n->content)->statbuf.st_rdev)) > max.maj)
+			max.maj = ft_nbrlen(MAJOR(((t_file *)n->content)->statbuf.st_rdev));
+		if (ft_nbrlen(MINOR(((t_file *)n->content)->statbuf.st_rdev)) > max.min)
+			max.min = ft_nbrlen(MINOR(((t_file *)n->content)->statbuf.st_rdev));
+		n = n->next;
 	}
 	return (max);
 }
@@ -50,35 +61,23 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 	ft_printf("%s %*d ", data->mode, max.link, data->nlink);
 	if (!options->flags[8].sign)
 		ft_printf("%-*s  ", max.passlen, data->pass->pw_name);
-	ft_printf("%-*s  %*d ", max.grouplen, data->group->gr_name,
-			max.size, data->size);
-	if (time(0) - data->time > 15778463)
-		ft_printf("%.7s%.5s ", tim, tim + 15);
+	ft_printf("%-*s  ", max.grouplen, data->group->gr_name);
+	if (data->mode[0] == 'c' || data->mode[0] == 'b')
+		ft_printf("%*d, %*d", max.maj + 1, MAJOR(data->statbuf.st_rdev),
+		max.min, MINOR(data->statbuf.st_rdev));
 	else
-		ft_printf("%.7s%.5s ", tim, tim + 7);
+		ft_printf("%*lld", ((max.maj + max.min > max.size))
+		? max.maj + max.min + 3 : max.size, data->size);
+	ft_printf(" %.7s%.5s %s", tim,
+		(time(0) - data->time > 157748463) ? tim + 15 : tim + 7, data->name);
 	if (S_ISLNK(data->statbuf.st_mode))
 	{
-		size = readlink(data->path, buffer, 99);
-		if (size != -1)
-			buffer[size] = '\0';
-		else
+		if ((size = readlink(data->path, buffer, 99)) == -1)
 			exit(ft_printf("ft_ls: %s", strerror(errno)) * 0 + errno);
-		ft_printf("%s -> %s\n", data->name, buffer);
+		buffer[size] = '\0';
+		ft_printf(" -> %s", buffer);
 	}
-	else
-		ft_printf("%s\n", data->name);
-}
-
-void			print_columns(t_file *data, struct s_max max,
-				t_option *options, int num)
-{
-	struct winsize	w;
-	int				i;
-
-	i = 0;
-
-	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-
+	ft_printf("\n");
 }
 
 void			print_files(t_option *options, t_list **files)
@@ -91,16 +90,13 @@ void			print_files(t_option *options, t_list **files)
 		return ;
 	max = get_max(files);
 	node = *files;
-	if (!options->flags[3].sign && !options->flags[10].sign)
-		print_columns(data, max, options, ft_lstlen(node));
-	else
-		while (node != NULL)
-		{
-			data = node->content;
-			if (options->flags[3].sign)
-				print_long(data, max, options);
-			else if (options->flags[10].sign)
-				ft_printf("%s\n", data->name);
-			node = node->next;
-		}
+	while (node != NULL)
+	{
+		data = node->content;
+		if (options->flags[3].sign)
+			print_long(data, max, options);
+		else
+			ft_printf("%s\n", data->name);
+		node = node->next;
+	}
 }
