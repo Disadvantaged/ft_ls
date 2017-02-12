@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/11 16:05:28 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 13:20:35 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <time.h>
 # include <errno.h>
 # include <sys/acl.h>
+# include <sys/ioctl.h>
 
 typedef struct	s_flag
 {
@@ -42,11 +43,12 @@ typedef struct	s_flag
 ** flags[7] - u(time of last access instead of last modification for -t or -l)
 ** flags[8] - g(user's name is ignored in -l)
 ** flags[9] - d(all directories are listed as simple files)
+** flags[10] - 1(1 entry per line)
 */
 
 typedef struct	s_option
 {
-	t_flag	flags[10];
+	t_flag	flags[11];
 	int		cursize;
 	int		maxsize;
 	char	**paths;
@@ -77,7 +79,8 @@ typedef struct	s_file
 struct			s_max
 {
 	int					size;
-	unsigned long		namelen;
+	unsigned long		passlen;
+	unsigned long		name;
 	unsigned long		grouplen;
 	int					link;
 };
@@ -94,5 +97,6 @@ void			print_files(t_option *options, t_list **files);
 void			inner_ls(t_option *options, t_directory *data);
 t_list			*create_file(char *path, t_option *options);
 t_list			*create_dir(char *path, t_option *options);
+void			print_columns(t_file *d, struct s_max m, t_option *op, int len);
 
 #endif

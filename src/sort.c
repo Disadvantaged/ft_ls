@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:15:06 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/11 16:30:50 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 11:43:44 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static intmax_t	time_compare(const void *a, const void *b)
 	if (atime == btime)
 		return (ft_strcmp(((t_file *)a)->path, ((t_file *)b)->path));
 	else
-		return (btime - atime);
+		return (atime - btime);
 }
 
 void			sort_list(t_option *options, t_list **head)
@@ -46,6 +46,8 @@ void			sort_list(t_option *options, t_list **head)
 	else
 		compare = &name_compare;
 	ft_lstsort(head, compare);
-	if (options->flags[4].sign || options->flags[1].sign)
+	if (options->flags[4].sign)
+		ft_lstrev(head);
+	if (options->flags[1].sign)
 		ft_lstrev(head);
 }

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/11 15:38:00 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/12 12:04:14 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ t_option	*set_default(void)
 	i = 0;
 	if ((options = (t_option*)malloc(sizeof(t_option))) == NULL
 		|| (options->paths = (char **)malloc(sizeof(char *) * 10)) == NULL)
-	{
-		ft_printf("ft_ls: %s", strerror(errno));
-		exit(-1);
-	}
+		exit(ft_printf("ft_ls: %s", strerror(errno)));
 	options->flags[0].letter = 'R';
 	options->flags[1].letter = 'r';
 	options->flags[2].letter = 'G';
@@ -34,7 +31,8 @@ t_option	*set_default(void)
 	options->flags[7].letter = 'u';
 	options->flags[8].letter = 'g';
 	options->flags[9].letter = 'd';
-	while (i < 10)
+	options->flags[10].letter = '1';
+	while (i < 11)
 		options->flags[i++].sign = 0;
 	options->cursize = 0;
 	options->maxsize = 10;
@@ -52,7 +50,7 @@ static void	check_flags(t_option *options, char *str)
 	while (str[i])
 	{
 		j = 0;
-		while (j < 10)
+		while (j < 11)
 			if (options->flags[j].letter == str[i])
 			{
 				options->flags[j].sign = 1;
@@ -60,7 +58,7 @@ static void	check_flags(t_option *options, char *str)
 			}
 			else
 				j++;
-		if (j == 10)
+		if (j == 11)
 			exit(1 + 0 * ft_printf("ft_ls: illegal option -- %c\nusage: \
 ./ft_ls [-RGadfglrtu] [file ...]\n", str[i]));
 		i++;

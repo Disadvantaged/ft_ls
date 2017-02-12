@@ -8,7 +8,8 @@ SRCS = src/main.c \
 	   src/file_data.c \
 	   src/sort.c \
 	   src/algo.c \
-	   src/free.c
+	   src/free.c \
+	   src/print.c
 LIBFT_PATH = libft/
 
 OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
