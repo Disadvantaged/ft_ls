@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 12:04:14 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 19:16:30 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_option	*set_default(void)
 	i = 0;
 	if ((options = (t_option*)malloc(sizeof(t_option))) == NULL
 		|| (options->paths = (char **)malloc(sizeof(char *) * 10)) == NULL)
-		exit(ft_printf("ft_ls: %s", strerror(errno)));
+		exit(ft_printf("ls: %s", strerror(errno)));
 	options->flags[0].letter = 'R';
 	options->flags[1].letter = 'r';
 	options->flags[2].letter = 'G';
@@ -46,7 +46,7 @@ static void	check_flags(t_option *options, char *str)
 
 	i = 0;
 	if (!str[++i])
-		exit(ft_printf("ft_ls: -: No such file or directory\n") * 0 + 1);
+		exit(ft_printf("ls: -: No such file or directory\n") * 0 + 1);
 	while (str[i])
 	{
 		j = 0;
@@ -59,7 +59,7 @@ static void	check_flags(t_option *options, char *str)
 			else
 				j++;
 		if (j == 11)
-			exit(1 + 0 * ft_printf("ft_ls: illegal option -- %c\nusage: \
+			exit(1 + 0 * ft_printf("ls: illegal option -- %c\nusage: \
 ./ft_ls [-RGadfglrtu] [file ...]\n", str[i]));
 		i++;
 	}
@@ -75,7 +75,7 @@ void		add_dir(t_option *options, char *str)
 		i = 0;
 		options->maxsize = options->maxsize * options->maxsize;
 		if ((arr = (char**)malloc(sizeof(char*) * options->maxsize)) == NULL)
-			exit(ft_printf("ft_ls: %s", strerror(errno)));
+			exit(ft_printf("ls: %s", strerror(errno)));
 		while (i < options->cursize)
 		{
 			arr[i] = ft_strdup(options->paths[i]);

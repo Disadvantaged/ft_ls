@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 18:30:24 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 19:20:36 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void			inner_ls(t_option *options, t_directory *data)
 		if (options->flags[0].sign && S_ISDIR(info->statbuf.st_mode)
 		&& ft_strcmp("..", info->name) && ft_strcmp(".", info->name))
 		{
-			ft_printf("\n%s:\n", info->name);
+			ft_printf("\n%s:\n", info->path);
 			dir = create_dir(info->path, options);
 			inner_ls(options, dir);
 			free_dir(dir);
@@ -94,7 +94,7 @@ void			ft_ls(t_option *options, t_list *files, t_list *dirs)
 		{
 			path = ((t_directory *)node->content)->path;
 			if (ft_lstlen(dirs) > 1)
-				ft_printf("%.*s:\n", (int)ft_strlen(path) - 1, path);
+				ft_printf("%s:\n", path);
 			inner_ls(options, (t_directory *)node->content);
 			if (node->next != NULL)
 				ft_printf("\n");

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 18:12:44 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 19:21:31 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ t_directory	*create_dir(char *path, t_option *options)
 
 	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL
 		|| (directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
-		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + 1);
+		exit(ft_printf("ls: %s: %s\n", ft_strrchr(path, '/') + 1,
+					strerror(errno)) * 0 + 1);
 	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
 	else
@@ -41,7 +42,7 @@ t_list		*create_file(char *path, t_option *options)
 
 	if ((node = (t_list *)malloc(sizeof(t_list))) == NULL)
 	{
-		ft_printf("ft_ls: %s: %s\n", path, strerror(errno));
+		ft_printf("ls: %s: %s\n", path, strerror(errno));
 		exit(errno);
 	}
 	filet = get_file_data(path, options);
@@ -61,7 +62,7 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 	while (i < options->cursize)
 	{
 		if (lstat(options->paths[i], &statbuf) < 0)
-			exit(1 + 0 * ft_printf("ft_ls: %s: %s\n", options->paths[i],
+			exit(1 + 0 * ft_printf("ls: %s: %s\n", options->paths[i],
 			strerror(errno)));
 		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
 		{

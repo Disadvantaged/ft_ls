@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 18:37:02 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 19:23:41 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ struct s_max	init_max(void)
 	max.name = 0;
 	max.size = 0;
 	max.maj = 0;
-	max.maj = 0;
+	max.min = 0;
 	return (max);
 }
 
@@ -57,7 +57,7 @@ struct s_max	get_max(t_list **files)
 void			print_long(t_file *data, struct s_max max, t_option *options)
 {
 	char	*tim;
-	char	buffer[100];
+	char	buffer[256];
 	int		size;
 
 	tim = ctime(&data->time) + 4;
@@ -69,13 +69,13 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 		ft_printf("%*d, %*d", max.maj + 1, MAJOR(data->statbuf.st_rdev),
 		max.min, MINOR(data->statbuf.st_rdev));
 	else
-		ft_printf("%*d", ((max.maj + max.min > max.size))
+		ft_printf("%*d", ((max.maj + max.min > max.size + 1))
 		? max.maj + max.min + 3 : max.size, data->size);
 	ft_printf(" %.7s%.5s %s", tim,
 		(time(0) - data->time > 15778463) ? tim + 15 : tim + 7, data->name);
 	if (S_ISLNK(data->statbuf.st_mode))
 	{
-		if ((size = readlink(data->path, buffer, 99)) == -1)
+		if ((size = readlink(data->path, buffer, 255)) == -1)
 			exit(ft_printf("ft_ls: %s", strerror(errno)) * 0 + errno);
 		buffer[size] = '\0';
 		ft_printf(" -> %s", buffer);
