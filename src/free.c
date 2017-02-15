@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 15:38:57 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/11 16:06:30 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 18:15:51 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@ void	free_options(t_option *options)
 	options = NULL;
 }
 
+void	free_dir(t_directory *dr)
+{
+	ft_strdel(&dr->path);
+	closedir(dr->dir);
+	free(dr);
+}
+
 void	free_dirs(t_list *dirs)
 {
 	t_list		*temp;
 	t_list		*node;
-	t_directory	*dr;
 
 	node = dirs;
 	if (node == NULL)
@@ -39,10 +45,7 @@ void	free_dirs(t_list *dirs)
 	{
 		temp = node;
 		node = node->next;
-		dr = temp->content;
-		ft_strdel(&dr->path);
-		closedir(dr->dir);
-		free(temp->content);
+		free_dir(temp->content);
 		free(temp);
 	}
 	dirs = NULL;

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 12:05:26 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/10 18:20:37 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 16:37:25 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	xattr_or_acl(char *path)
 	int			xattr;
 
 	acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
-	if (acl || acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+	if (acl == NULL || acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
 	{
 		acl_free(acl);
 		acl = NULL;

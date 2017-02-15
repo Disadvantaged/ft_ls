@@ -6,23 +6,21 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 16:31:18 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 18:12:44 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_list	*create_dir(char *path, t_option *options)
+t_directory	*create_dir(char *path, t_option *options)
 {
 	DIR			*directory;
 	t_directory	*dirt;
-	t_list		*node;
 	struct stat	statbuf;
 
 	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL
-		|| (node = (t_list *)malloc(sizeof(t_list))) == NULL
 		|| (directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
-		return (NULL);
+		exit(ft_printf("ft_ls: %s: %s", path, strerror(errno)) * 0 + 1);
 	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
 	else
@@ -33,13 +31,10 @@ t_list	*create_dir(char *path, t_option *options)
 		dirt->time = statbuf.st_atime;
 	else
 		dirt->time = statbuf.st_mtime;
-	node->content = dirt;
-	node->next = NULL;
-	node->content_size = sizeof(dirt);
-	return (node);
+	return (dirt);
 }
 
-t_list	*create_file(char *path, t_option *options)
+t_list		*create_file(char *path, t_option *options)
 {
 	t_file	*filet;
 	t_list	*node;
@@ -56,7 +51,7 @@ t_list	*create_file(char *path, t_option *options)
 	return (node);
 }
 
-void	path_to_dir(t_option *options, t_list **dir, t_list **file)
+void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 {
 	struct stat	statbuf;
 	t_list		*node;
@@ -66,14 +61,13 @@ void	path_to_dir(t_option *options, t_list **dir, t_list **file)
 	while (i < options->cursize)
 	{
 		if (lstat(options->paths[i], &statbuf) < 0)
-		{
-			ft_printf("ft_ls: %s: %s\n", options->paths[i], strerror(errno));
-			exit(errno);
-		}
+			exit(1 + 0 * ft_printf("ft_ls: %s: %s\n", options->paths[i],
+			strerror(errno)));
 		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
 		{
-			if ((node = create_dir(options->paths[i], options)) == NULL)
-				exit(ft_printf("ft_ls: %s\n", strerror(errno)));
+			node = (t_list *)malloc(sizeof(t_list));
+			node->next = NULL;
+			node->content = create_dir(options->paths[i], options);
 			ft_lstaddlast(dir, node);
 		}
 		else

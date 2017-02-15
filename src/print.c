@@ -6,20 +6,24 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 16:40:56 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 18:37:02 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void			init_max(struct s_max max)
+struct s_max	init_max(void)
 {
+	struct s_max	max;
+
 	max.passlen = 0;
 	max.grouplen = 0;
 	max.link = 0;
 	max.name = 0;
+	max.size = 0;
 	max.maj = 0;
 	max.maj = 0;
+	return (max);
 }
 
 struct s_max	get_max(t_list **files)
@@ -28,8 +32,7 @@ struct s_max	get_max(t_list **files)
 	struct s_max	max;
 
 	n = *files;
-	max.size = 0;
-	init_max(max);
+	max = init_max();
 	while (n != NULL)
 	{
 		if (ft_nbrlen(((t_file *)n->content)->size) > max.size)
@@ -66,10 +69,10 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 		ft_printf("%*d, %*d", max.maj + 1, MAJOR(data->statbuf.st_rdev),
 		max.min, MINOR(data->statbuf.st_rdev));
 	else
-		ft_printf("%*lld", ((max.maj + max.min > max.size))
+		ft_printf("%*d", ((max.maj + max.min > max.size))
 		? max.maj + max.min + 3 : max.size, data->size);
 	ft_printf(" %.7s%.5s %s", tim,
-		(time(0) - data->time > 157748463) ? tim + 15 : tim + 7, data->name);
+		(time(0) - data->time > 15778463) ? tim + 15 : tim + 7, data->name);
 	if (S_ISLNK(data->statbuf.st_mode))
 	{
 		if ((size = readlink(data->path, buffer, 99)) == -1)
@@ -88,6 +91,8 @@ void			print_files(t_option *options, t_list **files)
 
 	if (*files == NULL)
 		return ;
+	if (options->flags[3].sign)
+		ft_printf("total %d\n", get_total(*files));
 	max = get_max(files);
 	node = *files;
 	while (node != NULL)

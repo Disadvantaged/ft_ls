@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/12 16:40:12 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/15 18:30:41 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,15 @@ void			path_to_dir(t_option *options, t_list **dir, t_list **file);
 t_file			*get_file_data(char *path, t_option *options);
 void			ft_ls(t_option *options, t_list *files, t_list *dirs);
 void			free_options(t_option *options);
+void			free_dir(t_directory *dir);
 void			free_dirs(t_list *dirs);
 void			free_files(t_list *files);
 void			sort_list(t_option *options, t_list **head);
 void			print_files(t_option *options, t_list **files);
 void			inner_ls(t_option *options, t_directory *data);
 t_list			*create_file(char *path, t_option *options);
-t_list			*create_dir(char *path, t_option *options);
+t_directory		*create_dir(char *path, t_option *options);
+int				get_total(t_list *files);
+t_list			*get_files(t_option *options, t_directory *data);
 
 #endif
