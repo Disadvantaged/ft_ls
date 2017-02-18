@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 19:21:31 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/18 14:06:38 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ t_directory	*create_dir(char *path, t_option *options)
 	t_directory	*dirt;
 	struct stat	statbuf;
 
-	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL
-		|| (directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
-		exit(ft_printf("ls: %s: %s\n", ft_strrchr(path, '/') + 1,
-					strerror(errno)) * 0 + 1);
+	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL ||
+	(directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
+		return (NULL);
 	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
 	else
@@ -37,19 +36,17 @@ t_directory	*create_dir(char *path, t_option *options)
 
 t_list		*create_file(char *path, t_option *options)
 {
-	t_file	*filet;
+	t_file	*file;
 	t_list	*node;
 
-	if ((node = (t_list *)malloc(sizeof(t_list))) == NULL)
-	{
-		ft_printf("ls: %s: %s\n", path, strerror(errno));
-		exit(errno);
-	}
-	filet = get_file_data(path, options);
-	node->content = filet;
+	if ((file = get_file_data(path, options)) == NULL
+	|| (node = (t_list *)malloc(sizeof(t_list))) == NULL)
+		return (NULL);
 	node->next = NULL;
-	node->content_size = sizeof(filet);
+	node->content = file;
+	node->content_size = sizeof(file);
 	return (node);
+
 }
 
 void		path_to_dir(t_option *options, t_list **dir, t_list **file)
@@ -61,18 +58,23 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 	i = 0;
 	while (i < options->cursize)
 	{
-		if (lstat(options->paths[i], &statbuf) < 0)
-			exit(1 + 0 * ft_printf("ls: %s: %s\n", options->paths[i],
-			strerror(errno)));
-		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
+		lstat(options->paths[i], &statbuf);
+		node = (t_list *)malloc(sizeof(t_list));
+		node->next = NULL;
+		node->content = (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
+		? (void *)create_dir(options->paths[i], options):
+		(void *)get_file_data(options->paths[i], options);
+		if (node->content == NULL)
 		{
-			node = (t_list *)malloc(sizeof(t_list));
-			node->next = NULL;
-			node->content = create_dir(options->paths[i], options);
-			ft_lstaddlast(dir, node);
+			free(node);
+			ft_printf("ls: %s: %s\n", options->paths[i], strerror(errno));
+			i++;
+			continue ;
 		}
+		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
+			ft_lstaddlast(dir, node);
 		else
-			ft_lstaddlast(file, create_file(options->paths[i], options));
+			ft_lstaddlast(file, node); 
 		i++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/04 12:05:26 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 19:16:46 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/18 13:33:39 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,8 +105,9 @@ t_file		*get_file_data(char *path, t_option *options)
 	struct stat		statbuf;
 	t_file			*filet;
 
-	if ((filet = (t_file *)malloc(sizeof(t_file))) == NULL)
-		exit(ft_printf("ls: %s: %s", path, strerror(errno)) * 0 + errno);
+	if ((filet = (t_file *)malloc(sizeof(t_file))) == NULL
+		|| lstat(path, &statbuf) < 0)
+		return (NULL);
 	filet->path = ft_strdup(path);
 	if (ft_strrchr(filet->path, '/') == NULL)
 		filet->name = ft_strdup(filet->path);

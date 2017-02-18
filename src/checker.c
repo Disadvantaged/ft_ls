@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 19:16:30 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/18 14:05:33 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static void	check_flags(t_option *options, char *str)
 			else
 				j++;
 		if (j == 11)
-			exit(1 + 0 * ft_printf("ls: illegal option -- %c\nusage: \
-./ft_ls [-RGadfglrtu] [file ...]\n", str[i]));
+			exit(ft_printf("ls: illegal option -- %c\nusage: ls [-ABCFGHLOPRST\
+UWabcdefghiklmnopqrstuwx1] [file ...]\n"));
 		i++;
 	}
 }
@@ -84,8 +84,7 @@ void		add_dir(t_option *options, char *str)
 		free(options->paths);
 		options->paths = arr;
 	}
-	options->paths[options->cursize] = ft_strdup(str);
-	options->cursize++;
+	options->paths[options->cursize++] = ft_strdup(str);
 }
 
 t_option	*check_options(int ac, char **av)
@@ -99,7 +98,9 @@ t_option	*check_options(int ac, char **av)
 	options = set_default();
 	while (i < ac)
 	{
-		if (!flag && av[i][0] == '-')
+		if (ft_strcmp("--", av[i]) == 0 && flag == 0)
+			flag = 1;
+		else if (!flag && av[i][0] == '-')
 			check_flags(options, av[i]);
 		else
 		{

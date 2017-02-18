@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 19:20:36 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/18 13:38:53 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,12 @@ void			inner_ls(t_option *options, t_directory *data)
 		&& ft_strcmp("..", info->name) && ft_strcmp(".", info->name))
 		{
 			ft_printf("\n%s:\n", info->path);
-			dir = create_dir(info->path, options);
+			if ((dir = create_dir(info->path, options)) == NULL)
+			{
+				ft_printf("ls: %s: %s\n", info->name, strerror(errno));
+				node = node->next;
+				continue ;
+			}
 			inner_ls(options, dir);
 			free_dir(dir);
 		}
