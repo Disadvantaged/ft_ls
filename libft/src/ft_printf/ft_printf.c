@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 16:00:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/21 12:27:59 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 15:29:57 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int		g_len = 0;
 
-void	find_color(const char *format, int *i)
+int		find_color(const char *format, int *i)
 {
 	int		j;
 	char	*str;
@@ -28,14 +28,18 @@ void	find_color(const char *format, int *i)
 	while (format[j] && format[j] != '}')
 	{
 		tmp = str;
-		temp[0] = format[j];
+		temp[0] = format[j++];
 		str = ft_strjoin(str, temp);
 		ft_strdel(&tmp);
-		j++;
 	}
 	color = enable_color(str);
 	if (color != NO_COLOR)
+	{
 		*i = j + 1;
+		return (1);
+	}
+	else
+		return (0);
 	ft_strdel(&str);
 }
 
@@ -76,8 +80,8 @@ int		ft_printf(const char *format, ...)
 	{
 		if (format[i] == '{')
 		{
-			find_color(format, &i);
-			continue;
+			if (find_color(format, &i) == 1)
+				continue;
 		}
 		if (format[i++] != '%')
 		{
@@ -106,9 +110,9 @@ int		check(const char *format, int *pos, va_list ap)
 		params->width *= -1;
 	}
 	params->precision = check_precision(format, pos, ap);
-	if (params->precision != NO_PRECISION)
-		params->flags[2].sign = 0;
 	params->mod = check_length(format, pos);
+	if (params->precision != NO_PRECISION && params->precision != 0)
+		params->flags[2].sign = 0;
 	if ((length = conversion(format, pos, params, ap)) == -1)
 		return (0);
 	free(params->flags);

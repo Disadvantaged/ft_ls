@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 16:02:48 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 14:51:28 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 14:21:59 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "libft.h"
 # include <stdarg.h>
+# include <wchar.h>
 
 # define BLACK "\x1b[30m"
 # define RED "\x1b[31m"
@@ -74,11 +75,14 @@ int				check_width(const char *format, int *pos, va_list ap);
 t_length		check_length(const char *format, int *pos);
 int				print_int(t_param *params, va_list ap, char letter);
 int				print_string(t_param *params, va_list ap, char letter);
+int				print_wstring(t_param *params, va_list ap, char letter);
 int				print_percent(t_param *params, va_list ap, char letter);
 int				print_len(t_param *params, va_list ap, char letter);
 int				print_char(t_param *params, va_list ap, char letter);
+int				print_wchar(t_param *params, va_list ap, char letter);
 int				print_adress(t_param *params, va_list ap, char letter);
 int				print_unsigned(t_param *params, va_list ap, char letter);
-void			find_color(const char *format, int *i);
+int				find_color(const char *format, int *i);
 int				enable_color(char *str);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/03 16:30:18 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/23 17:35:59 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 13:21:44 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,14 @@ static int	min(int a, int b)
 	return (a);
 }
 
-static int	print_width(char *s, wchar_t *s1, char letter, t_param *params)
+static int	print_width(char *s, t_param *params)
 {
 	int		printed;
 	int		len;
 	int		width;
 
 	width = params->width;
-	if (letter == 's')
-		len = ft_strlen(s);
-	else
-		len = ft_wstrlen(s1);
+	len = ft_strlen(s);
 	if (params->precision != NO_PRECISION)
 		len = min(len, params->precision);
 	if (len == 0 && width == 1)
@@ -47,52 +44,33 @@ static int	print_width(char *s, wchar_t *s1, char letter, t_param *params)
 	return (printed);
 }
 
-static int	print_s(t_param *params, char *s, wchar_t *s1, char letter)
+static int	print_s(t_param *params, char *s)
 {
 	int		printed;
 
 	printed = 0;
-	if (letter == 's')
-	{
-		if (params->precision == NO_PRECISION)
-			printed += ft_putstr(s);
-		else
-			printed += ft_putnstr(s, params->precision);
-	}
+	if (params->precision == NO_PRECISION)
+		printed += ft_putstr(s);
 	else
-	{
-		if (params->precision == NO_PRECISION)
-			printed += ft_putwstr(s1);
-		else
-			printed += ft_putnwstr(s1, params->precision);
-	}
+		printed += ft_putnstr(s, params->precision);
 	return (printed);
 }
 
 int			print_string(t_param *params, va_list ap, char letter)
 {
 	char	*s;
-	wchar_t	*s1;
 	int		printed;
-	int		flag;
 
-	s1 = NULL;
+	if (params->mod == l)
+		return (print_wstring(params, ap, letter));
 	s = NULL;
-	flag = 0;
 	printed = 0;
-	if (letter == 'S' && (s1 = va_arg(ap, wchar_t *)) == NULL)
-		flag = 1;
-	if (letter == 's' && (s = va_arg(ap, char *)) == NULL)
-	{
-		flag = 1;
-		s = ft_strdup("(null)");
-	}
+	if ((s = va_arg(ap, char *)) == NULL)
+		s = "(null)";
 	if (params->flags[1].sign == 0)
-		printed += print_width(s, s1, letter, params);
-	printed += print_s(params, s, s1, letter);
+		printed += print_width(s, params);
+	printed += print_s(params, s);
 	if (params->flags[1].sign != 0)
-		printed += print_width(s, s1, letter, params);
-	if (flag && letter == 's')
-		ft_strdel(&s);
+		printed += print_width(s, params);
 	return (printed);
 }

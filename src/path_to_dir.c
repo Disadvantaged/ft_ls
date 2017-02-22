@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 14:06:38 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 11:31:42 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ t_list		*create_file(char *path, t_option *options)
 	node->content = file;
 	node->content_size = sizeof(file);
 	return (node);
-
 }
 
 void		path_to_dir(t_option *options, t_list **dir, t_list **file)
@@ -62,19 +61,18 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 		node = (t_list *)malloc(sizeof(t_list));
 		node->next = NULL;
 		node->content = (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
-		? (void *)create_dir(options->paths[i], options):
+		? (void *)create_dir(options->paths[i], options) :
 		(void *)get_file_data(options->paths[i], options);
 		if (node->content == NULL)
 		{
 			free(node);
-			ft_printf("ls: %s: %s\n", options->paths[i], strerror(errno));
-			i++;
-			continue ;
+			ft_printf("ls: %s: %s\n", options->paths[i++], strerror(errno));
+			continue;
 		}
 		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
 			ft_lstaddlast(dir, node);
 		else
-			ft_lstaddlast(file, node); 
+			ft_lstaddlast(file, node);
 		i++;
 	}
 }

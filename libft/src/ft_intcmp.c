@@ -6,13 +6,13 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 12:44:03 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/05 15:55:22 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/05 12:45:26 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-intmax_t	ft_intcmp(const void *a, const void *b)
+int		ft_intcmp(const void *a, const void *b)
 {
-	return (*(intmax_t *)a - *(intmax_t *)b);
+	return (*(int *)a - *(int *)b);
 }

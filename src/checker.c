@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 14:05:33 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 11:36:18 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ UWabcdefghiklmnopqrstuwx1] [file ...]\n"));
 	}
 }
 
-void		add_dir(t_option *options, char *str)
+static int	add_dir(t_option *options, char *str)
 {
 	char		**arr;
 	int			i;
@@ -73,7 +73,7 @@ void		add_dir(t_option *options, char *str)
 	if (options->cursize == options->maxsize)
 	{
 		i = 0;
-		options->maxsize = options->maxsize * options->maxsize;
+		options->maxsize = options->maxsize * 2;
 		if ((arr = (char**)malloc(sizeof(char*) * options->maxsize)) == NULL)
 			exit(ft_printf("ls: %s", strerror(errno)));
 		while (i < options->cursize)
@@ -85,6 +85,7 @@ void		add_dir(t_option *options, char *str)
 		options->paths = arr;
 	}
 	options->paths[options->cursize++] = ft_strdup(str);
+	return (1);
 }
 
 t_option	*check_options(int ac, char **av)
@@ -103,10 +104,7 @@ t_option	*check_options(int ac, char **av)
 		else if (!flag && av[i][0] == '-')
 			check_flags(options, av[i]);
 		else
-		{
-			add_dir(options, av[i]);
-			flag = 1;
-		}
+			flag = add_dir(options, av[i]);
 		i++;
 	}
 	if (options->flags[8].sign)

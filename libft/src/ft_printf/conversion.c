@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 15:17:53 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/18 14:57:07 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 12:53:54 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ t_conv	g_conv[] =
 	{'%', &print_percent},
 	{'n', &print_len},
 	{'s', &print_string},
-	{'S', &print_string},
+	{'S', &print_wstring},
 	{'c', &print_char},
-	{'C', &print_char},
+	{'C', &print_wchar},
 	{'p', &print_adress},
 	{'u', &print_unsigned},
 	{'U', &print_unsigned},

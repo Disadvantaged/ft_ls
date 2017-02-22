@@ -1,25 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_charchar.c                                   :+:      :+:    :+:   */
+/*   print_wchar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/07 13:47:27 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 13:52:14 by dgolear          ###   ########.fr       */
+/*   Created: 2017/02/19 12:52:33 by dgolear           #+#    #+#             */
+/*   Updated: 2017/02/19 13:25:16 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	print_width(t_param *params)
+static int	get_len(wchar_t c)
+{
+	if (c <= 0x7F)
+		return (1);
+	else if (c <= 0x7FF)
+		return (2);
+	else if (c <= 0xFFFF)
+		return (3);
+	else if (c <= 0x10FFFF)
+		return (4);
+	else
+		return (0);
+}
+
+static void	print_width(t_param *params, int len)
 {
 	int		width;
 
+	if (params->width < len)
+		params->width = len;
 	width = params->width;
-	if (width == 0)
-		params->width = 1;
-	while (width > 1)
+	while (width > len)
 	{
 		if (params->flags[2].sign)
 			ft_putchar('0');
@@ -29,22 +43,19 @@ static void	print_width(t_param *params)
 	}
 }
 
-int			print_char(t_param *params, va_list ap, char letter)
+int			print_wchar(t_param *params, va_list ap, char letter)
 {
-	char	c;
+	int			len;
+	wchar_t		c;
 
-	if (params->mod == l)
-		return (print_wchar(params, ap, letter));
-	c = va_arg(ap, int);
+	if (letter)
+		;
+	c = va_arg(ap, wchar_t);
+	len = get_len(c);
 	if (params->flags[1].sign)
-	{
-		ft_putchar(c);
-		print_width(params);
-	}
-	else
-	{
-		print_width(params);
-		ft_putchar(c);
-	}
+		print_width(params, len);
+	ft_putwchar(c);
+	if (!params->flags[1].sign)
+		print_width(params, len);
 	return (params->width);
 }

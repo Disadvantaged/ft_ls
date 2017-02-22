@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 14:04:16 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/07 14:05:10 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 13:02:55 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int		ft_putwstr_fd(wchar_t *s, int fd)
 	int		i;
 
 	i = 0;
-	while (s[i])
-		ft_putwchar_fd(s[i++], fd);
+	while (*s)
+	{
+		i += ft_putwchar_fd(*s, fd);
+		s++;
+	}
 	return (i);
 }

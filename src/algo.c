@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 13:38:53 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/19 11:42:57 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,12 @@ t_list			*get_files(t_option *options, t_directory *data)
 	return (files);
 }
 
-void			inner_ls(t_option *options, t_directory *data)
+static void		recursion(t_list *files, t_option *options)
 {
-	t_list			*files;
 	t_file			*info;
 	t_list			*node;
 	t_directory		*dir;
 
-	files = NULL;
-	files = get_files(options, data);
-	print_files(options, &files);
 	node = files;
 	while (node != NULL)
 	{
@@ -77,6 +73,16 @@ void			inner_ls(t_option *options, t_directory *data)
 		}
 		node = node->next;
 	}
+}
+
+void			inner_ls(t_option *options, t_directory *data)
+{
+	t_list			*files;
+
+	files = get_files(options, data);
+	print_files(options, &files);
+	if (options->flags[0].sign)
+		recursion(files, options);
 	free_files(files);
 }
 
