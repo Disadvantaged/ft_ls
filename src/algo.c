@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 11:42:57 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:44:42 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,19 @@ t_list			*get_files(t_option *options, t_directory *data)
 {
 	t_list			*files;
 	struct dirent	*dr;
-	struct stat		stat;
 	char			*path;
+	char			*temp;
 
 	files = NULL;
 	while ((dr = readdir(data->dir)) != NULL)
 	{
 		if (dr->d_name[0] == '.' && options->flags[5].sign == 0)
 			continue ;
-		path = ft_strjoin(data->path, dr->d_name);
-		lstat(path, &stat);
+		temp = ft_strjoin(data->path, "/");
+		path = ft_strjoin(temp, dr->d_name);
 		ft_lstaddlast(&files, create_file(path, options));
 		ft_strdel(&path);
+		ft_strdel(&temp);
 	}
 	sort_list(options, &files);
 	return (files);
@@ -64,7 +65,7 @@ static void		recursion(t_list *files, t_option *options)
 			ft_printf("\n%s:\n", info->path);
 			if ((dir = create_dir(info->path, options)) == NULL)
 			{
-				ft_printf("ls: %s: %s\n", info->name, strerror(errno));
+				ft_printf("ls: %s: %s\n", info->path, strerror(errno));
 				node = node->next;
 				continue ;
 			}

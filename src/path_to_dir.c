@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 11:31:42 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:45:10 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ t_directory	*create_dir(char *path, t_option *options)
 	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL ||
 	(directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
 		return (NULL);
-	if (path[ft_strlen(path) - 1] == '/')
 		dirt->path = ft_strdup(path);
-	else
-		dirt->path = ft_strjoin(path, "/");
 	dirt->dir = directory;
 	dirt->statbuf = statbuf;
 	if (options->flags[7].sign)

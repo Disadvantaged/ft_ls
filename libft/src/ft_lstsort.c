@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/05 11:47:43 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/05 13:10:32 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:02:28 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void		split_list(t_list *head, t_list **front, t_list **back)
 }
 
 static t_list	*merge_sort(t_list *a, t_list *b, \
-							int (*compare)(const void *, const void *))
+							intmax_t (*compare)(const void *, const void *))
 {
 	t_list	*result;
 
@@ -64,7 +64,7 @@ static t_list	*merge_sort(t_list *a, t_list *b, \
 }
 
 int				ft_lstsort(t_list **head, \
-		int (*compare)(const void *, const void *))
+		intmax_t (*compare)(const void *, const void *))
 {
 	t_list	*node;
 	t_list	*a;

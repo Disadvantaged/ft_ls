@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:15:06 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 12:13:13 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:10:01 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,7 @@ void			sort_list(t_option *options, t_list **head)
 		compare = &name_compare;
 	ft_lstsort(head, compare);
 	if (options->flags[1].sign || options->flags[4].sign)
+		ft_lstrev(head);
+	if (options->flags[1].sign && options->flags[4].sign)
 		ft_lstrev(head);
 }

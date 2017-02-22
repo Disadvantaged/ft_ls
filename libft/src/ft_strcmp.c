@@ -6,13 +6,13 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 08:27:36 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/05 12:49:50 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:01:25 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_strcmp(const void *a, const void *b)
+intmax_t	ft_strcmp(const void *a, const void *b)
 {
 	size_t		i;
 	char		*s1;
