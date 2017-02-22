@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 11:36:18 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 18:01:08 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,28 @@ t_option	*set_default(void)
 	options->flags[8].letter = 'g';
 	options->flags[9].letter = 'd';
 	options->flags[10].letter = '1';
-	while (i < 11)
+	options->flags[11].letter = 'S';
+	while (i < 12)
 		options->flags[i++].sign = 0;
 	options->cursize = 0;
 	options->maxsize = 10;
 	return (options);
 }
 
-static void	check_flags(t_option *options, char *str)
+static int	check_flags(t_option *options, char *str)
 {
 	int		i;
 	int		j;
 
-	i = 0;
-	if (!str[++i])
-		exit(ft_printf("ls: -: No such file or directory\n") * 0 + 1);
-	while (str[i])
+	i = 1;
+	if (str[1] == '\0' || str[0] != '-')
+		return (1);
+	if (ft_strcmp("--\0", str) == 0)
+		return (2);
+	while (str[i] != '\0')
 	{
 		j = 0;
-		while (j < 11)
+		while (j < 12)
 			if (options->flags[j].letter == str[i])
 			{
 				options->flags[j].sign = 1;
@@ -58,11 +61,12 @@ static void	check_flags(t_option *options, char *str)
 			}
 			else
 				j++;
-		if (j == 11)
+		if (j == 12)
 			exit(ft_printf("ls: illegal option -- %c\nusage: ls [-ABCFGHLOPRST\
 UWabcdefghiklmnopqrstuwx1] [file ...]\n"));
 		i++;
 	}
+	return (0);
 }
 
 static int	add_dir(t_option *options, char *str)
@@ -99,12 +103,12 @@ t_option	*check_options(int ac, char **av)
 	options = set_default();
 	while (i < ac)
 	{
-		if (ft_strcmp("--", av[i]) == 0 && flag == 0)
-			flag = 1;
-		else if (!flag && av[i][0] == '-')
-			check_flags(options, av[i]);
-		else
+		if (!flag)
+			flag = check_flags(options, av[i]);
+		if (flag == 1)
 			flag = add_dir(options, av[i]);
+		if (flag == 2)
+			flag = 1;
 		i++;
 	}
 	if (options->flags[8].sign)

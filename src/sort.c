@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:15:06 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/22 16:10:01 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 17:29:59 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,24 @@ static intmax_t	time_compare(const void *a, const void *b)
 	if (atime == btime)
 		return (ft_strcmp(as, bs));
 	else
-		return (atime - btime);
+		return (btime - atime);
+}
+
+static intmax_t	size_compare(const void *a, const void *b)
+{
+	long	asize;
+	long	bsize;
+	char	*as;
+	char	*bs;
+
+	as = ((t_file *)a)->path;
+	bs = ((t_file *)b)->path;
+	asize = ((t_file *)a)->size;
+	bsize = ((t_file *)b)->size;
+	if (asize == bsize)
+		return (ft_strcmp(as, bs));
+	else
+		return (bsize - asize);
 }
 
 void			sort_list(t_option *options, t_list **head)
@@ -47,11 +64,11 @@ void			sort_list(t_option *options, t_list **head)
 		return ;
 	if (options->flags[4].sign)
 		compare = &time_compare;
+	else if (options->flags[11].sign)
+		compare = &size_compare;
 	else
 		compare = &name_compare;
 	ft_lstsort(head, compare);
-	if (options->flags[1].sign || options->flags[4].sign)
-		ft_lstrev(head);
-	if (options->flags[1].sign && options->flags[4].sign)
+	if (options->flags[1].sign)
 		ft_lstrev(head);
 }

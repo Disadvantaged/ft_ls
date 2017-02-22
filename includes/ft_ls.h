@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 13:57:49 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/22 16:55:00 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ typedef struct	s_flag
 ** flags[8] - g(user's name is ignored in -l)
 ** flags[9] - d(all directories are listed as simple files)
 ** flags[10] - 1(1 entry per line)
+** flags[11] - S(sorting by size)
 */
 
 typedef struct	s_option
 {
-	t_flag	flags[11];
+	t_flag	flags[20];
 	int		cursize;
 	int		maxsize;
 	char	**paths;
