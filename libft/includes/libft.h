@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/09 09:44:19 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/22 16:01:10 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 13:55:21 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ char			*ft_strchr(const char *str, int c);
 char			*ft_strrchr(const char *str, int c);
 char			*ft_strstr(const char *haystack, const char *needle);
 char			*ft_strnstr(const char *s2, const char *s1, size_t len);
-intmax_t		ft_strcmp(const void *s1, const void *s2);
-intmax_t		ft_intcmp(const void *s1, const void *s2);
+int				ft_strcmp(const void *s1, const void *s2);
+int				ft_intcmp(const void *s1, const void *s2);
 int				ft_strncmp(const void *s1, const void *s2, size_t n);
 int				ft_atoi(const char *s);
 char			*ft_unsigned_itoa_base(uintmax_t val, char *base);

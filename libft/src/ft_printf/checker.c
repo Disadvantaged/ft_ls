@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/28 18:46:37 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/15 18:03:59 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 13:21:05 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,21 @@ int			check_width(const char *format, int *pos, va_list ap)
 	{
 		(*pos)++;
 		width = va_arg(ap, int);
+		if (ft_atoi(&format[*pos]) > 0)
+		{
+			width = ft_atoi(&format[*pos]);
+			(*pos) += ft_nbrlen(ft_atoi(&format[*pos]));
+		}
 	}
 	else if (ft_atoi(&format[*pos]) > 0)
 	{
 		width = ft_atoi(&format[*pos]);
 		(*pos) += ft_nbrlen(ft_atoi(&format[*pos]));
+		if (format[*pos] == '*')
+		{
+			(*pos)++;
+			width = va_arg(ap, int);
+		}
 	}
 	else
 		width = 0;

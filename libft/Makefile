@@ -90,15 +90,15 @@ SRC = ft_atoi.c \
 	   ft_printf/print_wstring.c \
 	   ft_printf/print_adress.c \
 	   ft_lstlen.c \
-	   ft_lstsort.c \
-	   ft_lstrev.c \
-	   ft_lstaddlast.c
+	   ft_lstsort.c
 SRCS = $(addprefix src/, $(SRC))
 RM = rm -f
+MKDIR = @mkdir -p $(@D)
 OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
 
-obj/%.o:src/%.c
-	gcc $(FLAGS) -c  -o $@ $<
+obj/%.o: src/%.c
+	$(MKDIR)
+	$(CC) $(FLAGS) -c  -o $@ $<
 
 all: $(NAME)
 
