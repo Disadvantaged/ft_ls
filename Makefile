@@ -16,14 +16,12 @@ OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
 
 RM = rm -f
 
+MKDIR = mkdir -p $(@D)
+
 all: $(NAME)
 
-$(OBJS): | obj
-
-obj:
-	@mkdir -p $@
-
 obj/%.o: src/%.c
+	$(MKDIR)
 	$(CC) $(FLAGS) -c -o $@ $<
 
 $(LIBFT_PATH)/libft.a:
