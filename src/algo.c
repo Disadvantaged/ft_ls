@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/22 18:12:07 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 18:09:39 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void		recursion(t_list *files, t_option *options)
 			ft_printf("\n%s:\n", info->path);
 			if ((dir = create_dir(info->path, options)) == NULL)
 			{
-				ft_printf("ls: %s: %s\n", info->path, strerror(errno));
+				ft_printf("ls: %s: %s\n", info->name, strerror(errno));
 				node = node->next;
 				continue ;
 			}
@@ -81,7 +81,9 @@ void			inner_ls(t_option *options, t_directory *data)
 	t_list			*files;
 
 	files = get_files(options, data);
-	print_files(options, &files);
+	if (options->flags[3].sign && files != NULL)
+		ft_printf("total %d\n", get_total(files));
+	print_files(options, &files, 0);
 	if (options->flags[0].sign)
 		recursion(files, options);
 	free_files(files);
@@ -92,26 +94,18 @@ void			ft_ls(t_option *options, t_list *files, t_list *dirs)
 	t_list	*node;
 	char	*path;
 
-	if (files != NULL)
+	print_files(options, &files, 1);
+	if (files != NULL && dirs != NULL)
+		ft_printf("\n");
+	node = dirs;
+	while (node != NULL)
 	{
-		print_files(options, &files);
-		if (dirs != NULL)
+		path = ((t_directory *)node->content)->path;
+		if (ft_lstlen(dirs) > 1 || files != NULL || errno != 0)
+			ft_printf("%s:\n", path);
+		inner_ls(options, (t_directory *)node->content);
+		if (node->next != NULL)
 			ft_printf("\n");
-		free_files(files);
-	}
-	if (dirs != NULL)
-	{
-		node = dirs;
-		while (node != NULL)
-		{
-			path = ((t_directory *)node->content)->path;
-			if (ft_lstlen(dirs) > 1)
-				ft_printf("%s:\n", path);
-			inner_ls(options, (t_directory *)node->content);
-			if (node->next != NULL)
-				ft_printf("\n");
-			node = node->next;
-		}
-		free_dirs(dirs);
+		node = node->next;
 	}
 }

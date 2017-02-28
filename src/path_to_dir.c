@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/22 17:55:59 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 18:29:17 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,13 @@ t_directory	*create_dir(char *path, t_option *options)
 	t_directory	*dirt;
 	struct stat	statbuf;
 
-	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL ||
-	(directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
+	if ((dirt = (t_directory*)malloc(sizeof(t_directory))) == NULL)
 		return (NULL);
+	if ((directory = opendir(path)) == NULL || lstat(path, &statbuf) < 0)
+	{
+		free(dirt);
+		return (NULL);
+	}
 	dirt->path = ft_strdup(path);
 	dirt->dir = directory;
 	dirt->statbuf = statbuf;
@@ -36,9 +40,13 @@ t_list		*create_file(char *path, t_option *options)
 	t_file	*file;
 	t_list	*node;
 
-	if ((file = get_file_data(path, options)) == NULL
-	|| (node = (t_list *)malloc(sizeof(t_list))) == NULL)
+	if ((node = (t_list *)malloc(sizeof(t_list))) == NULL)
 		return (NULL);
+	if ((file = get_file_data(path, options)) == NULL)
+	{
+		free(node);
+		return (NULL);
+	}
 	node->next = NULL;
 	node->content = file;
 	node->content_size = sizeof(file);
@@ -54,7 +62,8 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 	i = 0;
 	while (i < options->cursize)
 	{
-		lstat(options->paths[i], &statbuf);
+		options->flags[3].sign ? lstat(options->paths[i], &statbuf)
+		: stat(options->paths[i], &statbuf);
 		node = (t_list *)malloc(sizeof(t_list));
 		node->next = NULL;
 		node->content = (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
@@ -66,10 +75,8 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 			ft_printf("ls: %s: %s\n", options->paths[i++], strerror(errno));
 			continue;
 		}
-		if (S_ISDIR(statbuf.st_mode) && !options->flags[9].sign)
-			ft_lstaddlast(dir, node);
-		else
-			ft_lstaddlast(file, node);
+		ft_lstaddlast(S_ISDIR(statbuf.st_mode) && !options->flags[9].sign
+			? dir : file, node);
 		i++;
 	}
 }

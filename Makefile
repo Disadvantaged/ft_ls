@@ -16,7 +16,7 @@ OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
 
 RM = rm -f
 
-MKDIR = mkdir -p $(@D)
+MKDIR = @mkdir -p $(@D)
 
 all: $(NAME)
 

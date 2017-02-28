@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 15:38:57 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/18 14:01:34 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 17:19:33 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	free_options(t_option *options)
 		return ;
 	i = 0;
 	while (i < options->cursize)
-		ft_strdel(&options->paths[i++]);
+	{
+		ft_strdel(&options->paths[i]);
+		i++;
+	}
 	free(options->paths);
 	free(options);
 	options = NULL;

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/15 19:23:41 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/27 18:18:51 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ struct s_max	get_max(t_list **files)
 	return (max);
 }
 
-void			print_long(t_file *data, struct s_max max, t_option *options)
+void			print_long(t_file *data, struct s_max max, t_option *options,
+				int fg)
 {
 	char	*tim;
 	char	buffer[256];
@@ -71,8 +72,9 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 	else
 		ft_printf("%*d", ((max.maj + max.min > max.size + 1))
 		? max.maj + max.min + 3 : max.size, data->size);
-	ft_printf(" %.7s%.5s %s", tim,
-		(time(0) - data->time > 15778463) ? tim + 15 : tim + 7, data->name);
+	ft_printf(" %.7s%.5s %s", tim, ((time(0) - data->time > 15778463)
+		|| data->time - time(0) > 15778463) ? tim + 15 : tim + 7, fg == 0 ?
+		data->name : data->path);
 	if (S_ISLNK(data->statbuf.st_mode))
 	{
 		if ((size = readlink(data->path, buffer, 255)) == -1)
@@ -80,10 +82,9 @@ void			print_long(t_file *data, struct s_max max, t_option *options)
 		buffer[size] = '\0';
 		ft_printf(" -> %s", buffer);
 	}
-	ft_printf("\n");
 }
 
-void			print_files(t_option *options, t_list **files)
+void			print_files(t_option *options, t_list **files, int fg)
 {
 	t_list			*node;
 	t_file			*data;
@@ -91,17 +92,16 @@ void			print_files(t_option *options, t_list **files)
 
 	if (*files == NULL)
 		return ;
-	if (options->flags[3].sign)
-		ft_printf("total %d\n", get_total(*files));
 	max = get_max(files);
 	node = *files;
 	while (node != NULL)
 	{
 		data = node->content;
 		if (options->flags[3].sign)
-			print_long(data, max, options);
+			print_long(data, max, options, fg);
 		else
-			ft_printf("%s\n", data->name);
+			ft_printf("%s", fg == 0 ? data->name : data->path);
+		ft_printf("\n");
 		node = node->next;
 	}
 }
