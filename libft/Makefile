@@ -100,16 +100,26 @@ OBJS = $(patsubst src/%.c, obj/%.o, $(SRCS))
 
 obj/%.o: src/%.c
 	$(MKDIR)
-	$(CC) $(FLAGS) -c  -o $@ $<
+	@$(CC) $(FLAGS) -c  -o $@ $<
 
-all: $(NAME)
+all:	$(NAME)
 
 $(NAME): $(OBJS)
-	ar -rcs $(NAME) $^
+	@ echo -n 'Creating library ... '
+	@ ar rc $(NAME) $(OBJS)
+	@ ranlib $(NAME)
+	@ echo '[done]'
+
 clean:
-	$(RM) $(OBJS)
+	@ echo -n 'Removing objects ... '
+	@ rm -f $(OBJS)
+	@ echo '[done]'
 
 fclean: clean
-	$(RM) $(NAME)
+	@ echo -n 'Removing library ... '
+	@ rm -f $(NAME)
+	@ echo '[done]'
 
 re: fclean all
+
+.PHONY: all clean fclean re
