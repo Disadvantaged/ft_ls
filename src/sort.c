@@ -6,69 +6,34 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:15:06 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 18:33:09 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/28 17:25:22 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static intmax_t	name_compare(const void *a, const void *b)
+static t_option	*g_options;
+
+static intmax_t	filecmp(const void *a, const void *b)
 {
-	char	*as;
-	char	*bs;
+	int		cmp;
+	t_file	*fa;
+	t_file	*fb;
 
-	as = ((t_file *)a)->path;
-	bs = ((t_file *)b)->path;
-	return (ft_strcmp(as, bs));
-}
-
-static intmax_t	time_compare(const void *a, const void *b)
-{
-	time_t	atime;
-	time_t	btime;
-	char	*as;
-	char	*bs;
-
-	as = ((t_file *)a)->path;
-	bs = ((t_file *)b)->path;
-	atime = ((t_file *)a)->time;
-	btime = ((t_file *)b)->time;
-	if (atime == btime)
-		return (ft_strcmp(as, bs));
-	else
-		return (btime - atime);
-}
-
-static intmax_t	size_compare(const void *a, const void *b)
-{
-	long	asize;
-	long	bsize;
-	char	*as;
-	char	*bs;
-
-	as = ((t_file *)a)->path;
-	bs = ((t_file *)b)->path;
-	asize = ((t_file *)a)->size;
-	bsize = ((t_file *)b)->size;
-	if (asize == bsize)
-		return (ft_strcmp(as, bs));
-	else
-		return (bsize - asize);
+	fa = (t_file *)a;
+	fb = (t_file *)b;
+	cmp = 0;
+	if (g_options->sort == size)
+		cmp = fb->size - fa->size;
+	else if (g_options->sort == sec)
+		cmp = fb->time - fa->time;
+	if (cmp == 0)
+		cmp = ft_strcmp(fa->path, fb->path);
+	return (g_options->flags[1].sign ? 0 - cmp : cmp);
 }
 
 void			sort_list(t_option *options, t_list **head)
 {
-	intmax_t	(*compare)(const void *, const void *);
-
-	if (options->flags[6].sign)
-		return ;
-	if (options->flags[4].sign)
-		compare = &time_compare;
-	else if (options->flags[11].sign)
-		compare = &size_compare;
-	else
-		compare = &name_compare;
-	ft_lstsort(head, compare);
-	if (options->flags[1].sign)
-		ft_lstrev(head);
+	g_options = options;
+	ft_lstsort(head, &filecmp);
 }

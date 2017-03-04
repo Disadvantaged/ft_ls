@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/18 13:29:40 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 18:08:30 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/02/28 16:54:07 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,20 @@ typedef struct	s_flag
 ** flags[11] - S(sorting by size)
 */
 
+enum			e_sort
+{
+	size,
+	name,
+	sec
+};
+
 typedef struct	s_option
 {
-	t_flag	flags[20];
-	int		cursize;
-	int		maxsize;
-	char	**paths;
+	t_flag		flags[20];
+	int			cursize;
+	enum e_sort	sort;
+	int			maxsize;
+	char		**paths;
 }				t_option;
 
 typedef struct	s_directory
