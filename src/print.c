@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 18:18:51 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/04 14:47:37 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,27 @@ void			print_long(t_file *data, struct s_max max, t_option *options,
 	}
 }
 
+static void		print_color(t_file *data)
+{
+	struct stat	statbuf;
+
+	statbuf = data->statbuf;
+	if (S_ISDIR(statbuf.st_mode))
+		ft_putstr("\033[40;34m");
+	else if (S_ISLNK(statbuf.st_mode))
+		ft_putstr("\033[40;35m");
+	else if (S_ISSOCK(statbuf.st_mode))
+		ft_putstr("\033[40;32m");
+	else if (S_ISFIFO(statbuf.st_mode))
+		ft_putstr("\033[40;33m");
+	else if (statbuf.st_mode & S_IXUSR)
+		ft_putstr("\033[40;31m");
+	else if (S_ISBLK(statbuf.st_mode))
+		ft_putstr("\033[46;34m");
+	else if (S_ISCHR(statbuf.st_mode))
+		ft_putstr("\033[33;34m");
+}
+
 void			print_files(t_option *options, t_list **files, int fg)
 {
 	t_list			*node;
@@ -97,11 +118,13 @@ void			print_files(t_option *options, t_list **files, int fg)
 	while (node != NULL)
 	{
 		data = node->content;
+		if (options->flags[2].sign)
+			print_color(data);
 		if (options->flags[3].sign)
 			print_long(data, max, options, fg);
 		else
 			ft_printf("%s", fg == 0 ? data->name : data->path);
-		ft_printf("\n");
+		ft_printf("{eoc}\n");
 		node = node->next;
 	}
 }
