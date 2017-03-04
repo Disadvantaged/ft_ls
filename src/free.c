@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/11 15:38:57 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 17:19:33 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/04 12:46:38 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	free_options(t_option *options)
 
 void	free_dir(t_directory *dr)
 {
+	if (dr == NULL)
+		return ;
 	ft_strdel(&dr->path);
 	closedir(dr->dir);
 	free(dr);

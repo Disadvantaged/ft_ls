@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/28 16:29:42 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/04 12:49:03 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	add_dir(t_option *options, char *str)
 	{
 		i = 0;
 		options->maxsize = options->maxsize * 2;
-		if ((arr = (char**)malloc(sizeof(char*) * options->maxsize)) == NULL)
+		if ((arr = (char**)malloc(sizeof(char *) * options->maxsize)) == NULL)
 			exit(ft_printf("ls: %s", strerror(errno)));
 		while (i < options->cursize)
 		{
@@ -97,6 +97,7 @@ static int	add_dir(t_option *options, char *str)
 			ft_strdel(&options->paths[i++]);
 		}
 		free(options->paths);
+		options->paths = NULL;
 		options->paths = arr;
 	}
 	options->paths[options->cursize++] = ft_strdup(str);
