@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 12:48:32 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 14:49:11 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:06:48 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int			print_precision(t_param *params, char *value, char letter)
 	if (precision > (int)ft_strlen(value))
 		printed += precision - (int)ft_strlen(value);
 	while (precision > (int)ft_strlen(value))
-		precision -= ft_putstr("0");
+		precision -= ft_putstr_fd("0", g_fd);
 	return (printed);
 }
 
@@ -79,9 +79,9 @@ static int			print_width(t_param *ps, char *value, char l)
 	while (width > ps->precision && width > (int)ft_strlen(value))
 	{
 		if (ps->flags[2].sign)
-			printed += ft_putstr("0");
+			printed += ft_putstr_fd("0", g_fd);
 		else
-			printed += ft_putstr(" ");
+			printed += ft_putstr_fd(" ", g_fd);
 		width--;
 	}
 	if (!ps->flags[2].sign)
@@ -102,7 +102,7 @@ int					print_unsigned(t_param *params, va_list ap, char letter)
 	{
 		printed += print_precision(params, value, letter);
 		if (!(value[0] == '0' && params->precision == 0))
-			printed += ft_putstr(value);
+			printed += ft_putstr_fd(value, g_fd);
 		printed += print_width(params, value, letter);
 	}
 	else
@@ -110,7 +110,7 @@ int					print_unsigned(t_param *params, va_list ap, char letter)
 		printed += print_width(params, value, letter);
 		printed += print_precision(params, value, letter);
 		if (!(value[0] == '0' && params->precision == 0))
-			printed += ft_putstr(value);
+			printed += ft_putstr_fd(value, g_fd);
 	}
 	ft_strdel(&value);
 	ft_strdel(&base);

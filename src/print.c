@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/12 11:49:51 by dgolear           #+#    #+#             */
-/*   Updated: 2017/03/04 14:47:37 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:27:44 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void			print_long(t_file *data, struct s_max max, t_option *options,
 	if (S_ISLNK(data->statbuf.st_mode))
 	{
 		if ((size = readlink(data->path, buffer, 255)) == -1)
-			exit(ft_printf("ft_ls: %s", strerror(errno)) * 0 + errno);
+			exit(ft_dprintf(2, "ft_ls: %s", strerror(errno)) * 0 + errno);
 		buffer[size] = '\0';
 		ft_printf(" -> %s", buffer);
 	}

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/27 12:14:41 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 18:29:17 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:42:13 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void		path_to_dir(t_option *options, t_list **dir, t_list **file)
 		if (node->content == NULL)
 		{
 			free(node);
-			ft_printf("ls: %s: %s\n", options->paths[i++], strerror(errno));
+			ft_dprintf(STDERR_FILENO,
+					"ls: %s: %s\n", options->paths[i++], strerror(errno));
 			continue;
 		}
 		ft_lstaddlast(S_ISDIR(statbuf.st_mode) && !options->flags[9].sign

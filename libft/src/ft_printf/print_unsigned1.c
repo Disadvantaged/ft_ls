@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/14 15:31:18 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/22 15:33:55 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:03:48 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	print_appendix(t_param *ps, char letter, char *v, int *width)
 		else
 			ps->precision--;
 		(*width)--;
-		return (ft_putstr("0"));
+		return (ft_putstr_fd("0", g_fd));
 	}
 	if (ps->flags[3].sign && v[0] != '0')
 	{
@@ -30,12 +30,12 @@ int	print_appendix(t_param *ps, char letter, char *v, int *width)
 		if (letter == 'X')
 		{
 			*width -= 2;
-			return (ft_putstr("0X"));
+			return (ft_putstr_fd("0X", g_fd));
 		}
 		else if (letter == 'x')
 		{
 			*width -= 2;
-			return (ft_putstr("0x"));
+			return (ft_putstr_fd("0x", g_fd));
 		}
 	}
 	return (0);

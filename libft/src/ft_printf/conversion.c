@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 15:17:53 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 13:51:40 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 10:52:26 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,43 @@ int	print_percent(t_param *params, va_list ap, char letter)
 		params->width = 1;
 	width = params->width;
 	if (params->flags[1].sign)
-		ft_putchar('%');
+		ft_putchar_fd('%', g_fd);
 	while (width > 1)
 	{
 		if (params->flags[2].sign)
-			ft_putchar('0');
+			ft_putchar_fd('0', g_fd);
 		else
-			ft_putchar(' ');
+			ft_putchar_fd(' ', g_fd);
 		width--;
 	}
 	if (!params->flags[1].sign)
-		ft_putchar('%');
+		ft_putchar_fd('%', g_fd);
 	return (params->width);
+}
+
+int		check(const char *format, int *pos, va_list ap)
+{
+	int			length;
+	t_param		*params;
+
+	length = 0;
+	if ((params = (t_param*)ft_memalloc(sizeof(t_param))) == NULL
+		|| (params->flags = check_flags(format, pos)) == NULL)
+		return (0);
+	if ((params->width = check_width(format, pos, ap)) < 0)
+	{
+		params->flags[1].sign = 1;
+		params->width *= -1;
+	}
+	params->precision = check_precision(format, pos, ap);
+	params->mod = check_length(format, pos);
+	if (params->precision != NO_PRECISION && params->precision != 0)
+		params->flags[2].sign = 0;
+	if ((length = conversion(format, pos, params, ap)) == -1)
+		return (0);
+	free(params->flags);
+	free(params);
+	return (length);
 }
 
 int	conversion(const char *format, int *pos, t_param *params, va_list ap)
@@ -78,11 +103,11 @@ int	conversion(const char *format, int *pos, t_param *params, va_list ap)
 	else
 		printed = 0;
 	if (params->flags[1].sign && params->width > 1)
-		printed += ft_putchar(format[(*pos)++]);
+		printed += ft_putchar_fd(format[(*pos)++], g_fd);
 	while (params->width > 1)
 		if (!params->flags[2].sign)
-			params->width -= ft_putstr(" ");
+			params->width -= ft_putstr_fd(" ", g_fd);
 		else
-			params->width -= ft_putstr("0");
+			params->width -= ft_putstr_fd("0", g_fd);
 	return (printed);
 }

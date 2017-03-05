@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnstr.c                                       :+:      :+:    :+:   */
+/*   ft_putnstr_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/03 16:38:10 by dgolear           #+#    #+#             */
-/*   Updated: 2017/03/05 10:59:51 by dgolear          ###   ########.fr       */
+/*   Created: 2017/03/05 10:59:58 by dgolear           #+#    #+#             */
+/*   Updated: 2017/03/05 11:00:06 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_putnstr(char *s, int n)
+int		ft_putnstr_fd(char *s, int n, int fd)
 {
-	return (ft_putnstr_fd(s, n, 1));
+	int		i;
+
+	if (s == NULL)
+		return (0);
+	i = 0;
+	while (s[i] && i < n)
+	{
+		ft_putchar_fd(s[i++], fd);
+	}
+	return (i);
 }

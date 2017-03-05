@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/07 13:47:27 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 13:52:14 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 10:54:43 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ static void	print_width(t_param *params)
 	while (width > 1)
 	{
 		if (params->flags[2].sign)
-			ft_putchar('0');
+			ft_putchar_fd('0', g_fd);
 		else
-			ft_putchar(' ');
+			ft_putchar_fd(' ', g_fd);
 		width--;
 	}
 }
@@ -44,7 +44,7 @@ int			print_char(t_param *params, va_list ap, char letter)
 	else
 	{
 		print_width(params);
-		ft_putchar(c);
+		ft_putchar_fd(c, g_fd);
 	}
 	return (params->width);
 }

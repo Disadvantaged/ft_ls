@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/19 15:08:47 by dgolear           #+#    #+#             */
-/*   Updated: 2017/03/04 12:49:03 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:39:43 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_option	*set_default(void)
 	i = 0;
 	if ((options = (t_option*)malloc(sizeof(t_option))) == NULL
 		|| (options->paths = (char **)malloc(sizeof(char *) * 10)) == NULL)
-		exit(ft_printf("ls: %s", strerror(errno)));
+		exit(ft_dprintf(STDERR_FILENO, "ls: %s", strerror(errno)));
 	options->flags[0].letter = 'R';
 	options->flags[1].letter = 'r';
 	options->flags[2].letter = 'G';
@@ -59,8 +59,8 @@ static void	add_flags(char c, t_option *options)
 		}
 		i++;
 	}
-	exit(ft_printf("ls: illegal option -- %c\nusage: ls [-ABCFGHLOPRST\
--UWabcdefghiklmnopqrstuwx1] [file ...]\n"));
+	exit(ft_dprintf(STDERR_FILENO, "ls: illegal option -- %c\nusage: ls \
+[-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n"));
 }
 
 static int	check_flags(t_option *options, char *str)
@@ -90,7 +90,7 @@ static int	add_dir(t_option *options, char *str)
 		i = 0;
 		options->maxsize = options->maxsize * 2;
 		if ((arr = (char**)malloc(sizeof(char *) * options->maxsize)) == NULL)
-			exit(ft_printf("ls: %s", strerror(errno)));
+			exit(ft_dprintf(STDERR_FILENO, "ls: %s", strerror(errno)));
 		while (i < options->cursize)
 		{
 			arr[i] = ft_strdup(options->paths[i]);

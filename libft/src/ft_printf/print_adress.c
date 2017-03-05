@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/13 18:21:55 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/17 16:54:17 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 10:54:16 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,18 @@ static void	print_width(t_param *p, char *adress)
 	width = p->width;
 	if (p->flags[1].sign)
 		while (width > (int)ft_strlen(adress) + 2 && width > p->precision)
-			width -= ft_putstr(" ");
+			width -= ft_putstr_fd(" ", g_fd);
 	else
 	{
 		if (p->flags[2].sign)
-			ft_putstr("0x");
+			ft_putstr_fd("0x", g_fd);
 		while (width > (int)ft_strlen(adress) + 2 && width > p->precision)
 			if (p->flags[2].sign)
-				width -= ft_putstr("0");
+				width -= ft_putstr_fd("0", g_fd);
 			else
-				width -= ft_putstr(" ");
+				width -= ft_putstr_fd(" ", g_fd);
 		if (!p->flags[2].sign)
-			ft_putstr("0x");
+			ft_putstr_fd("0x", g_fd);
 	}
 	if (p->precision > (int)ft_strlen(adress) + 2)
 		p->width = p->precision + 2;
@@ -76,7 +76,7 @@ static void	print_precision(t_param *params, char *adress)
 	len = (int)ft_strlen(adress);
 	precision = params->precision;
 	while (precision > len)
-		precision -= ft_putstr("0");
+		precision -= ft_putstr_fd("0", g_fd);
 }
 
 int			print_adress(t_param *params, va_list ap, char letter)
@@ -90,10 +90,10 @@ int			print_adress(t_param *params, va_list ap, char letter)
 		params->width = ft_strlen(adress) + 2;
 	if (params->flags[1].sign)
 	{
-		ft_putstr("0x");
+		ft_putstr_fd("0x", g_fd);
 		print_precision(params, adress);
 		if (!(ft_strcmp(adress, "0") == 0 && params->precision == 0))
-			ft_putstr(adress);
+			ft_putstr_fd(adress, g_fd);
 		print_width(params, adress);
 	}
 	else
@@ -101,7 +101,7 @@ int			print_adress(t_param *params, va_list ap, char letter)
 		print_width(params, adress);
 		print_precision(params, adress);
 		if (!(ft_strcmp(adress, "0") == 0 && params->precision == 0))
-			ft_putstr(adress);
+			ft_putstr_fd(adress, g_fd);
 	}
 	free(adress);
 	return (params->width);

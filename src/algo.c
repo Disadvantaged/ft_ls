@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 18:17:34 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 18:09:39 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:37:06 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static void		recursion(t_list *files, t_option *options)
 			ft_printf("\n%s:\n", info->path);
 			if ((dir = create_dir(info->path, options)) == NULL)
 			{
-				ft_printf("ls: %s: %s\n", info->name, strerror(errno));
+				ft_dprintf(STDERR_FILENO,
+						"ls: %s: %s\n", info->name, strerror(errno));
 				node = node->next;
 				continue ;
 			}

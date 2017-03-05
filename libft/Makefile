@@ -37,6 +37,8 @@ SRC = ft_atoi.c \
 	   ft_putnbr_fd.c \
 	   ft_putnstr.c \
 	   ft_putnwstr.c \
+	   ft_putnstr_fd.c \
+	   ft_putnwstr_fd.c \
 	   ft_putstr.c \
 	   ft_putstr_fd.c \
 	   ft_puttab.c \
@@ -89,6 +91,7 @@ SRC = ft_atoi.c \
 	   ft_printf/print_wchar.c \
 	   ft_printf/print_wstring.c \
 	   ft_printf/print_adress.c \
+	   ft_printf/colors.c \
 	   ft_lstlen.c \
 	   ft_lstsort.c \
 	   ft_lstrev.c \

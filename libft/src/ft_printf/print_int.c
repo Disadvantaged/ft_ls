@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/30 16:48:26 by dgolear           #+#    #+#             */
-/*   Updated: 2017/01/15 17:37:35 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:19:21 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ static int		print_width(intmax_t vl, t_param *ps)
 	while (width > len && width > ps->precision)
 	{
 		if (ps->flags[2].sign)
-			printed += ft_putstr("0");
+			printed += ft_putstr_fd("0", g_fd);
 		else
-			printed += ft_putstr(" ");
+			printed += ft_putstr_fd(" ", g_fd);
 		width--;
 	}
 	return (printed);
@@ -77,7 +77,7 @@ static int		print_precision(intmax_t val, t_param *params)
 		printed += print_sign(val, params);
 	while (precision > len)
 	{
-		ft_putchar('0');
+		ft_putchar_fd('0', g_fd);
 		printed++;
 		precision--;
 	}
@@ -101,9 +101,9 @@ static int		print_value(intmax_t val, t_param *params)
 		s = ft_itoa(val);
 	while (s[printed])
 	{
-		ft_putchar(s[printed++]);
+		ft_putchar_fd(s[printed++], g_fd);
 		if (params->flags[4].sign && printed % 3 == 0)
-			ft_putchar(',');
+			ft_putchar_fd(',', g_fd);
 	}
 	if (params->flags[4].sign)
 		printed += printed / 4;

@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/19 12:54:30 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/19 14:42:40 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:04:50 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static void	print_width(int len, t_param *params)
 	while (width > len)
 	{
 		if (params->flags[2].sign)
-			ft_putchar('0');
+			ft_putchar_fd('0', g_fd);
 		else
-			ft_putchar(' ');
+			ft_putchar_fd(' ', g_fd);
 		width--;
 	}
 }
@@ -63,7 +63,7 @@ int			print_wstring(t_param *params, va_list ap, char letter)
 		len = ft_wstrlen(s);
 	if (params->flags[1].sign == 0)
 		print_width(len, params);
-	ft_putnwstr(s, len);
+	ft_putnwstr_fd(s, len, g_fd);
 	if (params->flags[1].sign != 0)
 		print_width(len, params);
 	return (params->width);

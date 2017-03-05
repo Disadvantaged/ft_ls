@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/23 16:02:48 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 13:51:31 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:13:54 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,9 @@ int				print_adress(t_param *params, va_list ap, char letter);
 int				print_unsigned(t_param *params, va_list ap, char letter);
 int				find_color(const char *format, int *i);
 int				enable_color(char *str);
+int				ft_dprintf(int fd, const char *format, ...);
+int				ft_vdprintf(int fd, const char *format, va_list ap);
+
+extern int		g_fd;
 
 #endif

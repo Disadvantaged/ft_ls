@@ -6,7 +6,7 @@
 /*   By: dgolear <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/09 09:44:19 by dgolear           #+#    #+#             */
-/*   Updated: 2017/02/27 13:55:21 by dgolear          ###   ########.fr       */
+/*   Updated: 2017/03/05 11:13:47 by dgolear          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,9 @@ char			*ft_itoa(intmax_t n);
 int				ft_putchar(char c);
 int				ft_putwchar(wchar_t c);
 int				ft_putstr(char const *s);
-int				ft_putnstr(char *s, int n);
 int				ft_putnwstr(wchar_t *s, int n);
+int				ft_putnwstr_fd(wchar_t *s, int n, int fd);
+int				ft_putnstr_fd(char *s, int n, int fd);
 int				ft_putwstr(wchar_t *s);
 int				ft_putendl(char const *s);
 void			ft_putnbr(intmax_t n);
@@ -108,5 +109,7 @@ t_list			*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int				ft_lstlen(t_list *lst);
 void			ft_lstrev(t_list **head);
 void			ft_lstaddlast(t_list **alst, t_list *new);
+int				ft_dprintf(int fd, const char *format, ...);
+int				ft_vdprintf(int fd, const char *format, va_list ap);
 
 #endif
